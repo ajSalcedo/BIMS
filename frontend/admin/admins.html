@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Management | BIMS</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <aside class="admin-sidebar">
+    <div class="admin-title">☰<span>ADMIN PORTAL</span></div>
+    <a href="/admin/dashboard.html">Dashboard</a>
+    <a href="/admin/residents.html">Resident Management</a>
+    <a class="active" href="/admin/admins.html">Admin Management</a>
+    <a href="#">Services and Request Management</a>
+    <a href="#">Concerns and Reports</a>
+    <button id="logoutButton">Log Out ↩</button>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header"><h1>ADMIN MANAGEMENT</h1></header>
+    <section class="admin-content">
+      <div class="admin-panel">
+        <h2>Create Admin / Staff Account</h2>
+        <p class="muted">Only an Administrator can create another admin account.</p>
+        <form id="adminForm" class="admin-form">
+          <label>Username<input name="username" required></label>
+          <label>Full Name<input name="fullName" required></label>
+          <label>Email<input name="email" type="email"></label>
+          <label>Password<input name="password" type="password" minlength="8" required></label>
+          <label>Role
+            <select name="role"><option>Administrator</option><option>Staff</option></select>
+          </label>
+          <button class="button" type="submit">Create Account</button>
+          <p id="message" class="form-message"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+  <script src="/js/admin-admins.js"></script>
+</body>
+</html>

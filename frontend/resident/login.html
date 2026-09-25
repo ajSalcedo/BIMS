@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resident Login | BIMS</title>
+  <link rel="stylesheet" href="/css/global.css">
+</head>
+<body class="auth-page">
+  <a class="back-link" href="/">← Back</a>
+
+  <main class="login-layout">
+    <section class="login-card">
+      <h1>Resident Log In</h1>
+      <form id="residentLoginForm">
+        <label>Username
+          <input id="username" required autocomplete="username">
+        </label>
+        <label>Password
+          <input id="password" type="password" required autocomplete="current-password">
+        </label>
+        <div class="form-row small-row">
+          <label class="checkbox-label"><input type="checkbox" id="remember"> Remember Me</label>
+          <span class="muted">Forgot password?</span>
+        </div>
+        <button class="button" type="submit">Log In</button>
+        <p id="message" class="form-message"></p>
+      </form>
+      <p class="center">No account? <a href="/resident/register.html">Create a resident account</a></p>
+    </section>
+
+    <section class="login-card admin-entry">
+      <h2>Admin Access</h2>
+      <p>Administrator accounts use a separate portal.</p>
+      <a class="button secondary-button" href="/admin/login.html">Admin Login</a>
+    </section>
+  </main>
+
+  <script src="/js/resident-login.js"></script>
+</body>
+</html>

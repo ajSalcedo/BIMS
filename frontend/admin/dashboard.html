@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal | BIMS</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <aside class="admin-sidebar">
+    <div class="admin-title">☰<span>ADMIN PORTAL</span></div>
+    <a class="active" href="/admin/dashboard.html">Dashboard</a>
+    <a href="/admin/residents.html">Resident Management</a>
+    <a href="/admin/admins.html">Admin Management</a>
+    <a href="#">Services and Request Management</a>
+    <a href="#">Concerns and Reports</a>
+    <button id="logoutButton">Log Out ↩</button>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <h1>ADMIN PORTAL</h1>
+      <span id="adminName">Admin</span>
+    </header>
+
+    <section class="admin-content">
+      <h2>Dashboard</h2>
+      <div class="admin-stats">
+        <article><span>Registered Residents</span><strong id="residentCount">0</strong></article>
+        <article><span>Households</span><strong id="householdCount">0</strong></article>
+        <article><span>Admin Users</span><strong id="adminCount">0</strong></article>
+      </div>
+      <div class="admin-panel">
+        <h3>Resident Information Management</h3>
+        <p>Use Resident Management to search, view, and update registered resident records and household information.</p>
+        <a class="button" href="/admin/residents.html">Open Resident Management</a>
+      </div>
+    </section>
+  </main>
+  <script src="/js/admin-dashboard.js"></script>
+</body>
+</html>

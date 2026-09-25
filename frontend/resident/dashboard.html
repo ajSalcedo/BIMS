@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resident Dashboard | BIMS</title>
+  <link rel="stylesheet" href="/css/portal.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="side-brand">RESIDENTS<br>PORTAL</div>
+    <a class="active" href="/resident/dashboard.html">▣ Dashboard</a>
+    <a href="/resident/profile.html">◉ My Profile</a>
+    <a href="#">▤ Request Document</a>
+    <a href="#">⌕ Track Request</a>
+    <a href="#">♟ Notification</a>
+    <button id="logoutButton" class="logout">Log Out</button>
+  </aside>
+
+  <main class="portal-main">
+    <header class="portal-header">
+      <div>
+        <p class="eyebrow">RESIDENTS DASHBOARD</p>
+        <h1>Manage your barangay information</h1>
+      </div>
+      <div class="user-pill" id="welcomeUser">Resident</div>
+    </header>
+
+    <section class="stats-grid">
+      <article class="stat-card"><span>My Profile</span><strong>1</strong></article>
+      <article class="stat-card"><span>Requests</span><strong>0</strong></article>
+      <article class="stat-card"><span>Notifications</span><strong>0</strong></article>
+    </section>
+
+    <section class="dashboard-card">
+      <h2>Resident Information</h2>
+      <div id="profileSummary">Loading...</div>
+      <a class="button" href="/resident/profile.html">View My Profile</a>
+    </section>
+  </main>
+
+  <script src="/js/resident-dashboard.js"></script>
+</body>
+</html>

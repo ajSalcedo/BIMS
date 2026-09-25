@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resident Management | BIMS</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+  <aside class="admin-sidebar">
+    <div class="admin-title">☰<span>ADMIN PORTAL</span></div>
+    <a href="/admin/dashboard.html">Dashboard</a>
+    <a class="active" href="/admin/residents.html">Resident Management</a>
+    <a href="/admin/admins.html">Admin Management</a>
+    <a href="#">Services and Request Management</a>
+    <a href="#">Concerns and Reports</a>
+    <button id="logoutButton">Log Out ↩</button>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <h1>RESIDENT MANAGEMENT</h1>
+      <a href="/admin/dashboard.html">⌂</a>
+    </header>
+
+    <section class="resident-management">
+      <article class="resident-list-panel">
+        <h2>Search Resident Name/Number</h2>
+        <div class="search-row">
+          <input id="searchInput" placeholder="Type here...">
+          <button id="searchButton">⌕</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Full Name</th><th>Address</th><th>Contact No.</th></tr>
+            </thead>
+            <tbody id="residentTable"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <section class="resident-detail-column">
+        <article class="admin-panel" id="residentDetails">
+          <h2>Resident Details</h2>
+          <p class="muted">Select a resident from the table.</p>
+        </article>
+        <article class="admin-panel" id="householdDetails">
+          <h2>Household Information</h2>
+          <p class="muted">Household information will appear here.</p>
+        </article>
+      </section>
+    </section>
+  </main>
+
+  <script src="/js/admin-residents.js"></script>
+</body>
+</html>
