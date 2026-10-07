@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Document | BIMS</title><link rel="stylesheet" href="/css/portal.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="side-brand">RESIDENTS<br>PORTAL</div>
+    <a href="/resident/dashboard.html">▣ Dashboard</a>
+    <a class="active" href="/resident/request.html">▤ Request Document</a>
+    <a href="/resident/requests.html">⌕ Track Request</a>
+    <a href="/resident/concern.html">⚠ Community Concern</a><a href="/resident/concerns.html">☷ My Concerns</a><a href="/resident/notifications.html">♟ Notification</a>
+    <a href="/resident/profile.html">◉ My Profile</a>
+    <button id="logoutButton" class="logout">Log Out</button>
+  </aside>
+  <main class="portal-main">
+    <header class="portal-header"><div><p class="eyebrow">REQUEST DOCUMENT</p><h1>Barangay Services and Request Management</h1></div><div class="user-pill">Resident Portal</div></header>
+    <section class="request-layout">
+      <div class="dashboard-card">
+        <h2>Document Request Form</h2>
+        <p class="muted">Fill out the form below to submit a barangay document request.</p>
+        <form id="requestForm" class="request-form">
+          <label>Document Type<select id="serviceType" required><option value="">Select document</option></select></label>
+          <label>Purpose<textarea id="purpose" maxlength="255" rows="4" required placeholder="State the purpose of your request"></textarea></label>
+          <div class="form-row">
+            <label>Number of Copies<input id="copies" type="number" min="1" max="10" value="1" required></label>
+            <label>Payment Method<select id="paymentMethod"><option>Pay at Barangay Hall</option><option>Online Payment</option></select></label>
+          </div>
+          <div class="fee-box">Estimated Fee: <strong id="fee">₱0.00</strong></div>
+          <p class="muted small">Online payment is recorded as a payment method in this version. Actual payment gateway integration is not included yet.</p>
+          <button class="button" type="submit">Submit Request</button>
+          <p id="message" class="form-message"></p>
+        </form>
+      </div>
+      <aside class="dashboard-card instructions">
+        <h2>Request Instructions</h2>
+        <ol><li>Select the document or service you need.</li><li>Provide a clear purpose.</li><li>Submit your request.</li><li>Save the tracking number shown after submission.</li><li>Monitor the request under Track Request.</li></ol>
+        <div class="status-key"><b>Status flow</b><span>Pending → Processing → Ready for Pickup → Completed</span></div>
+      </aside>
+    </section>
+  </main>
+  <script src="/js/resident-request.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Resident Account | BIMS</title>
+  <link rel="stylesheet" href="/css/global.css">
+</head>
+<body class="form-page">
+  <main class="form-shell">
+    <a class="back-link" href="/">← Back to Portal</a>
+    <h1>Create Resident Account</h1>
+    <p class="notice">Fields marked with * are required. Only collect information needed for the barangay system.</p>
+
+    <form id="registerForm" class="large-form">
+      <h2>Account Information</h2>
+      <div class="form-grid">
+        <label>Username *<input name="username" required minlength="4"></label>
+        <label>Email<input name="email" type="email"></label>
+        <label>Password *<input name="password" type="password" required minlength="8"></label>
+        <label>Confirm Password *<input name="confirmPassword" type="password" required minlength="8"></label>
+      </div>
+
+      <h2>Resident Information</h2>
+      <div class="form-grid">
+        <label>First Name *<input name="firstName" required></label>
+        <label>Middle Name<input name="middleName"></label>
+        <label>Last Name *<input name="lastName" required></label>
+        <label>Suffix<input name="suffix"></label>
+        <label>Birth Date *<input name="birthDate" type="date" required></label>
+        <label>Sex *
+          <select name="sex" required>
+            <option value="">Select</option><option>Male</option><option>Female</option>
+            <option>Other</option><option>Prefer not to say</option>
+          </select>
+        </label>
+        <label>Civil Status *
+          <select name="civilStatus" required>
+            <option value="">Select</option><option>Single</option><option>Married</option>
+            <option>Widowed</option><option>Separated</option><option>Other</option>
+          </select>
+        </label>
+        <label>Place of Birth<input name="placeOfBirth"></label>
+        <label>Nationality<input name="nationality" value="Filipino"></label>
+        <label>Religion<input name="religion"></label>
+        <label>Complete Address *<input name="address" required></label>
+        <label>Purok *<input name="purok" required></label>
+        <label>Contact Number<input name="contactNumber"></label>
+        <label>Years of Residency<input name="yearsOfResidency" type="number" min="0" step="0.1"></label>
+        <label>Employment Status<input name="employmentStatus"></label>
+        <label>Occupation<input name="occupation"></label>
+        <label>Educational Attainment<input name="educationalAttainment"></label>
+        <label>Blood Type<input name="bloodType"></label>
+        <label>Disability / Special Needs<input name="disabilityStatus"></label>
+        <label>Voter Status
+          <select name="voterStatus">
+            <option>Unknown</option><option>Registered</option><option>Not Registered</option>
+          </select>
+        </label>
+        <label>Relationship to Household Head<input name="relationshipToHead"></label>
+        <label>Emergency Contact Person<input name="emergencyContact"></label>
+        <label>Emergency Contact Number<input name="emergencyContactNumber"></label>
+      </div>
+
+      <label class="checkbox-label terms">
+        <input type="checkbox" id="terms" required>
+        I agree to the Terms and Conditions.
+      </label>
+
+      <button class="button" type="submit">Create Account</button>
+      <p id="message" class="form-message"></p>
+    </form>
+  </main>
+
+  <script src="/js/register.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | BIMS</title>
+  <link rel="stylesheet" href="/css/global.css">
+</head>
+<body class="auth-page admin-auth">
+  <a class="back-link" href="/">← Back to Public Portal</a>
+  <main class="login-layout single">
+    <section class="login-card">
+      <h1>Admin Log In</h1>
+      <p class="muted">This is a separate administrative portal.</p>
+      <form id="adminLoginForm">
+        <label>Username<input id="username" required autocomplete="username"></label>
+        <label>Password<input id="password" type="password" required autocomplete="current-password"></label>
+        <button class="button" type="submit">Log In</button>
+        <p id="message" class="form-message"></p>
+      </form>
+    </section>
+  </main>
+  <script src="/js/admin-login.js"></script>
+</body>
+</html>
