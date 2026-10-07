@@ -30,6 +30,7 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
   window.location.href = "/";
 });
 loadDashboard();
+<<<<<<< HEAD
 
 
 async function loadRequestCount() {
@@ -43,3 +44,5 @@ loadRequestCount();
 
 async function loadConcernCount(){const r=await fetch('/api/concerns/mine');if(r.ok){const d=await r.json();const e=document.getElementById('concernCount');if(e)e.textContent=(d.concerns||[]).length;}}
 loadConcernCount();
+=======
+>>>>>>> f306956f3c2100a930787040fe4b05e0bb925221
