@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Concerns and Reports | BIMS</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <button class="admin-sidebar-backdrop" type="button" aria-label="Close navigation menu" aria-hidden="true"></button>
+    <aside class="admin-sidebar" id="adminSidebar" aria-hidden="true">
+      <div class="admin-title"><span>ADMIN PORTAL</span></div>
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/residents.html">Resident Management</a>
+      <a href="/admin/admins.html">Admin Management</a>
+      <a href="/admin/requests.html">Services and Request Management</a>
+      <a class="active" href="/admin/concerns.html">Concerns and Reports</a>
+      <button id="logoutButton">Log Out ↩</button>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <button class="sidebar-toggle" type="button" aria-label="Open navigation menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
+        <h1>CONCERNS AND REPORTS</h1>
+        <span id="adminName">Admin</span>
+      </header>
+
+      <section class="concern-admin">
+        <div class="admin-panel">
+          <h2>Community Concerns</h2>
+
+          <div class="admin-toolbar">
+            <input id="search" placeholder="Search tracking number, resident, or subject" />
+
+            <select id="statusFilter">
+              <option value="">All statuses</option>
+              <option>Submitted</option>
+              <option>Under Review</option>
+              <option>In Progress</option>
+              <option>Resolved</option>
+              <option>Rejected</option>
+            </select>
+
+            <select id="categoryFilter">
+              <option value="">All categories</option>
+              <option>Peace and Order</option>
+              <option>Sanitation</option>
+              <option>Infrastructure</option>
+              <option>Environment</option>
+              <option>Utilities</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div id="concernTable">Loading...</div>
+        </div>
+
+        <div class="admin-panel" id="detail">
+          <p>Select a concern to view its details.</p>
+        </div>
+
+        <div class="admin-panel report-panel">
+          <h2>Concern Reports</h2>
+          <div id="reportSummary">Loading report...</div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/js/admin-sidebar.js"></script>
+    <script src="/js/admin-concerns.js"></script>
+  </body>
+</html>

@@ -30,3 +30,16 @@ document.getElementById("logoutButton").addEventListener("click", async () => {
   window.location.href = "/";
 });
 loadDashboard();
+
+
+async function loadRequestCount() {
+  const response = await fetch("/api/requests/mine");
+  if (!response.ok) return;
+  const data = await response.json();
+  const el = document.getElementById("requestCount");
+  if (el) el.textContent = data.requests.length;
+}
+loadRequestCount();
+
+async function loadConcernCount(){const r=await fetch('/api/concerns/mine');if(r.ok){const d=await r.json();const e=document.getElementById('concernCount');if(e)e.textContent=(d.concerns||[]).length;}}
+loadConcernCount();
