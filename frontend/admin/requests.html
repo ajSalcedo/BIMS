@@ -1,1 +1,56 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Services and Request Management | BIMS</title><link rel="stylesheet" href="/css/admin.css"></head><body><aside class="admin-sidebar"><div class="admin-title">☰<span>ADMIN PORTAL</span></div><a href="/admin/dashboard.html">Dashboard</a><a href="/admin/residents.html">Resident Management</a><a class="active" href="/admin/requests.html">Services and Request Management</a><a href="/admin/admins.html">Admin Management</a><a href="#">Concerns and Reports</a><button id="logoutButton">Log Out ↩</button></aside><main class="admin-main"><header class="admin-header"><h1>SERVICES AND REQUEST MANAGEMENT</h1><span id="adminName">Admin</span></header><section class="request-management"><div class="request-admin-list"><div class="admin-toolbar"><input id="search" placeholder="Search tracking number or resident"><select id="statusFilter"><option value="">All statuses</option><option>Pending</option><option>Processing</option><option>Ready for Pickup</option><option>Completed</option><option>Rejected</option><option>Cancelled</option></select></div><div id="requestTable">Loading...</div></div><div class="request-admin-detail" id="detail"><p>Select a request to view its details.</p></div></section></main><script src="/js/admin-requests.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Services and Request Management | BIMS</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+  </head>
+  <body>
+    <button class="admin-sidebar-backdrop" type="button" aria-label="Close navigation menu" aria-hidden="true"></button>
+    <aside class="admin-sidebar" id="adminSidebar" aria-hidden="true">
+      <div class="admin-title"><span>ADMIN PORTAL</span></div>
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/residents.html">Resident Management</a>
+      <a href="/admin/admins.html">Admin Management</a>
+      <a class="active" href="/admin/requests.html">Services and Request Management</a>
+      <a href="/admin/concerns.html">Concerns and Reports</a>
+      <button id="logoutButton">Log Out ↩</button>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <button class="sidebar-toggle" type="button" aria-label="Open navigation menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
+        <h1>SERVICES AND REQUEST MANAGEMENT</h1>
+        <span id="adminName">Admin</span>
+      </header>
+
+      <section class="request-management">
+        <div class="request-admin-list">
+          <div class="admin-toolbar">
+            <input id="search" placeholder="Search tracking number or resident" />
+
+            <select id="statusFilter">
+              <option value="">All statuses</option>
+              <option>Pending</option>
+              <option>Processing</option>
+              <option>Ready for Pickup</option>
+              <option>Completed</option>
+              <option>Rejected</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+
+          <div id="requestTable">Loading...</div>
+        </div>
+
+        <div class="request-admin-detail" id="detail">
+          <p>Select a request to view its details.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="/js/admin-sidebar.js"></script>
+    <script src="/js/admin-requests.js"></script>
+  </body>
+</html>

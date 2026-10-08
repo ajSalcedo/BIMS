@@ -7,18 +7,22 @@
   <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-  <aside class="admin-sidebar">
-    <div class="admin-title">☰<span>ADMIN PORTAL</span></div>
+  <button class="admin-sidebar-backdrop" type="button" aria-label="Close navigation menu" aria-hidden="true"></button>
+  <aside class="admin-sidebar" id="adminSidebar" aria-hidden="true">
+    <div class="admin-title"><span>ADMIN PORTAL</span></div>
     <a href="/admin/dashboard.html">Dashboard</a>
     <a href="/admin/residents.html">Resident Management</a>
     <a class="active" href="/admin/admins.html">Admin Management</a>
-    <a href="#">Services and Request Management</a>
-    <a href="#">Concerns and Reports</a>
+    <a href="/admin/requests.html">Services and Request Management</a>
+    <a href="/admin/concerns.html">Concerns and Reports</a>
     <button id="logoutButton">Log Out ↩</button>
   </aside>
 
   <main class="admin-main">
-    <header class="admin-header"><h1>ADMIN MANAGEMENT</h1></header>
+    <header class="admin-header">
+      <button class="sidebar-toggle" type="button" aria-label="Open navigation menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
+      <h1>ADMIN MANAGEMENT</h1>
+    </header>
     <section class="admin-content">
       <div class="admin-panel">
         <h2>Create Admin / Staff Account</h2>
@@ -37,6 +41,7 @@
       </div>
     </section>
   </main>
+  <script src="/js/admin-sidebar.js"></script>
   <script src="/js/admin-admins.js"></script>
 </body>
 </html>

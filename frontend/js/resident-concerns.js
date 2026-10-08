@@ -1,6 +1,38 @@
 let concerns=[];
-async function load(){const me=await fetch('/api/residents/me');if(!me.ok)return location.href='/resident/login.html';const md=await me.json();welcomeUser.textContent=md.profile?.full_name||'Resident';const r=await fetch('/api/concerns/mine');const d=await r.json();concerns=d.concerns||[];render(concerns);}
-function render(rows){concernList.innerHTML=rows.length?rows.map(c=>`<button class="request-item" onclick="showConcern(${c.concern_id})"><span><strong>${c.tracking_number}</strong> — ${c.subject}<small>${c.category} • ${new Date(c.submitted_at).toLocaleString()}</small></span><span class="status">${c.status}</span></button>`).join(''):'<p class="muted">No community concerns submitted yet.</p>';}
-async function showConcern(id){const r=await fetch('/api/concerns/mine/'+concerns.find(c=>c.concern_id===id).tracking_number);const d=await r.json();const c=d.concern;concernDetail.innerHTML=`<div class="dashboard-card"><h2>${c.tracking_number}</h2><div class="info-grid"><div class="info-item"><small>Category</small>${c.category}</div><div class="info-item"><small>Status</small>${c.status}</div><div class="info-item"><small>Urgency</small>${c.urgency}</div><div class="info-item"><small>Location</small>${c.location}</div></div><p><strong>Subject:</strong> ${c.subject}</p><p>${c.description}</p><h3>Status History</h3><div class="timeline">${d.history.map(h=>`<div><strong>${h.status}</strong><span>${h.remarks||''}</span><small>${new Date(h.changed_at).toLocaleString()}${h.changed_by_name?' • '+h.changed_by_name:''}</small></div>`).join('')}</div></div>`;}
-searchButton.onclick=()=>{const q=trackingSearch.value.trim().toLowerCase();render(q?concerns.filter(c=>c.tracking_number.toLowerCase().includes(q)):concerns)};
-logoutButton.onclick=async()=>{await fetch('/api/resident-auth/logout',{method:'POST'});location.href='/';};load();
+async function load(){
+  const me = await fetch('/api/residents/me/profile');
+  if (!me.ok) return (window.location.href = '/resident/login.html');
+
+  const md = await me.json();
+  welcomeUser.textContent = md.profile?.full_name || 'Resident';
+
+  const r = await fetch('/api/concerns/mine');
+  const d = await r.json();
+  concerns = d.concerns || [];
+  render(concerns);
+}
+
+function render(rows){
+  concernList.innerHTML = rows.length
+    ? rows.map(c => `<button class="request-item" onclick="showConcern(${c.concern_id})"><span><strong>${c.tracking_number}</strong> — ${c.subject}<small>${c.category} • ${new Date(c.submitted_at).toLocaleString()}</small></span><span class="status">${c.status}</span></button>`).join('')
+    : '<p class="muted">No community concerns submitted yet.</p>';
+}
+
+async function showConcern(id){
+  const r = await fetch(`/api/concerns/mine/${concerns.find(c => c.concern_id === id).tracking_number}`);
+  const d = await r.json();
+  const c = d.concern;
+  concernDetail.innerHTML = `<div class="dashboard-card"><h2>${c.tracking_number}</h2><div class="info-grid"><div class="info-item"><small>Category</small>${c.category}</div><div class="info-item"><small>Status</small>${c.status}</div><div class="info-item"><small>Urgency</small>${c.urgency}</div><div class="info-item"><small>Location</small>${c.location}</div></div><p><strong>Subject:</strong> ${c.subject}</p><p>${c.description}</p><h3>Status History</h3><div class="timeline">${d.history.map(h => `<div><strong>${h.status}</strong><span>${h.remarks || ''}</span><small>${new Date(h.changed_at).toLocaleString()}${h.changed_by_name ? ' • ' + h.changed_by_name : ''}</small></div>`).join('')}</div></div>`;
+}
+
+searchButton.onclick = () => {
+  const q = trackingSearch.value.trim().toLowerCase();
+  render(q ? concerns.filter(c => c.tracking_number.toLowerCase().includes(q)) : concerns);
+};
+
+logoutButton.onclick = async () => {
+  await fetch('/api/resident-auth/logout', { method: 'POST' });
+  location.href = '/';
+};
+
+load();
