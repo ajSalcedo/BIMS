@@ -37,6 +37,21 @@ app.use("/api/dashboard", dashboard);
 app.use("/api/requests", requests);
 app.use("/api/concerns", concerns);
 
+app.use("/admin", (req, res, next) => {
+  res.set("Cache-Control", "no-store");
+  next();
+});
+
+app.get("/admin/manageAdmins.html", (req, res, next) => {
+  if (!req.session.adminUser) {
+    return res.redirect("/admin/login.html");
+  }
+  if (req.session.adminUser.role !== "Administrator") {
+    return res.redirect("/admin/dashboard.html");
+  }
+  next();
+});
+
 app.use(express.static(path.join(__dirname, "../frontend")));
 
 app.get("/health", (req, res) => {

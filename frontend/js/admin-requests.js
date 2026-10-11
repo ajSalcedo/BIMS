@@ -172,7 +172,7 @@ const logoutButton = document.getElementById('logoutButton');
 if (logoutButton) {
   logoutButton.onclick = async () => {
     await fetch('/api/admin-auth/logout', { method: 'POST' });
-    location.href = '/admin/login.html';
+    location.replace('/');
   };
 }
 

@@ -30,6 +30,9 @@ SOURCE database/bims.sql;
 
 Or open `database/bims.sql` and execute it.
 
+For an existing database created before admin account profile editing was added, run
+`database/admin_profile_migration.sql` once to add the admin address and contact fields.
+
 ## 3. Configure environment variables
 
 Copy `.env.example` to `.env`:

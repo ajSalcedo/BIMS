@@ -37,7 +37,12 @@ button, input, select { font: inherit; }
 .light-button { background:#f0f1f3; color:#111; margin-top:12px; }
 .secondary-button { background:#243b73; }
 .service-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:28px; margin-top:70px; }
-.service-card { background:white; color:#111; border-radius:22px; padding:28px; min-height:170px; }
+.service-card {
+  background:rgba(255,255,255,.82); color:#111; border:1px solid rgba(255,255,255,.55);
+  border-radius:22px; padding:28px; min-height:170px;
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  box-shadow:0 6px 14px rgba(0,0,0,.16);
+}
 .service-card h2 { font-family:Georgia, serif; margin:12px 0 6px; }
 .service-card p { color:#555; }
 .service-icon { font-size:48px; }
@@ -51,7 +56,10 @@ button, input, select { font: inherit; }
 }
 .login-layout.single { max-width:520px; grid-template-columns:1fr; }
 .login-card {
-  background:#1c2a57; color:white; border-radius:28px; padding:36px;
+  background:rgba(28,42,87,.82); color:white; border:1px solid rgba(255,255,255,.14);
+  border-radius:28px; padding:36px;
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  box-shadow:0 6px 14px rgba(0,0,0,.18);
 }
 .login-card h1, .login-card h2 { font-family:Georgia, serif; }
 .login-card label, .large-form label, .admin-form label {
@@ -73,8 +81,11 @@ button, input, select { font: inherit; }
 .form-shell h1 { text-align:center; font-family:Georgia, serif; font-size:42px; }
 .notice { background:#fff3cd; color:#664d03; padding:12px 16px; border-radius:10px; }
 .large-form {
-  background:white; color:#172033; padding:28px; border-radius:20px;
+  background:rgba(255,255,255,.86); color:#172033; padding:28px;
+  border:1px solid rgba(255,255,255,.6); border-radius:20px;
   display:grid; gap:24px;
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  box-shadow:0 6px 14px rgba(0,0,0,.16);
 }
 .large-form h2 { margin:0; color:var(--blue-dark); }
 .form-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:16px; }

@@ -11,4 +11,4 @@ async function showConcern(id){const r=await fetch('/api/concerns/admin/'+id);if
 }
 function renderReport(d){const t=d.totals||{};reportSummary.innerHTML=`<div class="admin-stats"><article><span>Total</span><strong>${t.total||0}</strong></article><article><span>In Progress</span><strong>${t.in_progress||0}</strong></article><article><span>Resolved</span><strong>${t.resolved||0}</strong></article></div><h3>By Category</h3>${d.categories?.length?d.categories.map(x=>`<div class="report-row"><span>${x.category}</span><strong>${x.total}</strong></div>`).join(''):'<p>No concern data yet.</p>'}<h3>Last 30 Days</h3>${d.recent?.length?d.recent.map(x=>`<div class="report-row"><span>${x.date}</span><strong>${x.total}</strong></div>`).join(''):'<p>No recent concerns.</p>'}`;}
 search.oninput=()=>render(concerns);statusFilter.onchange=()=>render(concerns);categoryFilter.onchange=()=>render(concerns);
-logoutButton.onclick=async()=>{await fetch('/api/admin-auth/logout',{method:'POST'});location.href='/'};init();
+logoutButton.onclick=async()=>{await fetch('/api/admin-auth/logout',{method:'POST'});location.replace('/')};init();

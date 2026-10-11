@@ -142,7 +142,7 @@ document.getElementById("searchInput").addEventListener("keydown", e => {
 });
 document.getElementById("logoutButton").addEventListener("click", async () => {
   await fetch("/api/admin-auth/logout", { method: "POST" });
-  window.location.href = "/";
+  window.location.replace("/");
 });
 
 loadResidents();
