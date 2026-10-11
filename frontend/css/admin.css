@@ -74,6 +74,25 @@ tr:hover td { background:#a9cff7; }
   padding:9px; border:1px solid #d2d5d9; border-radius:8px;
 }
 .admin-form { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:800px; }
+.account-management { padding:36px 28px; }
+.account-panel { width:min(100%,980px); margin:0 auto; padding:30px 38px 36px; background:white; border-radius:15px; box-shadow:0 8px 18px rgba(0,0,0,.12); }
+.account-panel h2 { margin:0 0 8px; color:#101828; font-size:28px; }
+.account-intro,.password-fields p { color:var(--muted); margin:0 0 22px; }
+.account-form { display:grid; gap:12px; max-width:620px; }
+.account-form label { display:flex; flex-direction:column; gap:5px; font-size:14px; font-weight:700; }
+.account-form input { width:100%; padding:10px 12px; border:1px solid #aeb4bc; border-radius:6px; font:inherit; font-weight:400; }
+.account-form input:focus { outline:2px solid #75aff0; border-color:#0759a8; }
+.account-name-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; }
+.password-fields { display:grid; gap:12px; margin:6px 0 0; padding:14px; border:1px solid #d2d5d9; border-radius:8px; }
+.password-fields legend { padding:0 6px; font-weight:700; }
+.password-fields p { margin:0; font-size:13px; }
+.account-actions { display:flex; gap:12px; margin-top:8px; }
+.account-actions button { min-width:90px; border:0; border-radius:8px; padding:10px 16px; font-weight:700; cursor:pointer; }
+.account-actions .button { background:#0759a8; color:white; }
+.account-cancel { background:#ff5b61; color:white; }
+.account-actions button:focus-visible { outline:2px solid #172033; outline-offset:3px; }
+.account-form .form-message { min-height:18px; margin:0; color:#18794e; font-weight:700; }
+.account-form .form-message.error { color:#b42318; }
 @media(max-width:950px) {
   .resident-management, .admin-stats, .admin-form { grid-template-columns:1fr; }
 }
@@ -82,4 +101,8 @@ tr:hover td { background:#a9cff7; }
 @media(max-width:600px) {
   .admin-header { padding:0 14px; gap:12px; }
   .admin-header h1 { font-size:18px; }
+  .account-management { padding:20px 14px; }
+  .account-panel { padding:24px 18px; }
+  .account-panel h2 { font-size:24px; }
+  .account-name-fields { grid-template-columns:1fr; gap:12px; }
 }
