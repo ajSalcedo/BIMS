@@ -7,8 +7,9 @@
   <link rel="stylesheet" href="/css/admin.css">
 </head>
 <body>
-  <aside class="admin-sidebar">
-    <div class="admin-title">☰<span>ADMIN PORTAL</span></div>
+  <button class="admin-sidebar-backdrop" type="button" aria-label="Close navigation menu" aria-hidden="true"></button>
+  <aside class="admin-sidebar" id="adminSidebar" aria-hidden="true">
+    <div class="admin-title"><span>ADMIN PORTAL</span></div>
     <a href="/admin/dashboard.html">Dashboard</a>
     <a class="active" href="/admin/residents.html">Resident Management</a>
     <a href="/admin/admins.html">Admin Management</a>
@@ -19,6 +20,7 @@
 
   <main class="admin-main">
     <header class="admin-header">
+      <button class="sidebar-toggle" type="button" aria-label="Open navigation menu" aria-controls="adminSidebar" aria-expanded="false">☰</button>
       <h1>RESIDENT MANAGEMENT</h1>
       <a href="/admin/dashboard.html">⌂</a>
     </header>
@@ -53,6 +55,7 @@
     </section>
   </main>
 
+  <script src="/js/admin-sidebar.js"></script>
   <script src="/js/admin-residents.js"></script>
 </body>
 </html>
