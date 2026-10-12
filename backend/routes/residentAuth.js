@@ -138,7 +138,12 @@ router.get("/me", async (req, res) => {
 });
 
 router.post("/logout", (req, res) => {
-  req.session.destroy(() => {
+  req.session.destroy((error) => {
+    if (error) {
+      console.error(error);
+      return res.status(500).json({ message: "Unable to log out." });
+    }
+
     res.json({ message: "Logged out." });
   });
 });

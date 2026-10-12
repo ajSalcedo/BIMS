@@ -37,6 +37,26 @@ app.use("/api/dashboard", dashboard);
 app.use("/api/requests", requests);
 app.use("/api/concerns", concerns);
 
+const protectedResidentPages = new Set([
+  "/dashboard.html",
+  "/profile.html",
+  "/request.html",
+  "/trackRequests.html",
+  "/concern.html",
+  "/myConcerns.html",
+  "/notifications.html"
+]);
+
+app.use("/resident", (req, res, next) => {
+  res.set("Cache-Control", "no-store, no-cache, must-revalidate, private");
+
+  if (protectedResidentPages.has(req.path) && !req.session.residentUser) {
+    return res.redirect("/resident/login.html");
+  }
+
+  next();
+});
+
 app.use("/admin", (req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();

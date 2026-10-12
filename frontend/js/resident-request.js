@@ -27,5 +27,9 @@ form.addEventListener("submit", async e => {
   if (response.ok) { message.textContent = `Request submitted. Tracking number: ${data.trackingNumber}`; form.reset(); copies.value=1; updateFee(); }
   else message.textContent = data.message || "Unable to submit request.";
 });
-document.getElementById("logoutButton").addEventListener("click", async () => { await fetch("/api/resident-auth/logout", {method:"POST"}); window.location.href="/"; });
+document.getElementById("logoutButton").addEventListener("click", async () => {
+  const response = await fetch("/api/resident-auth/logout", { method: "POST" });
+  if (!response.ok) throw new Error("Unable to log out.");
+  window.location.replace("/");
+});
 loadServices();
