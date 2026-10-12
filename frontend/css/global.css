@@ -527,6 +527,124 @@ button, input, select, textarea { font: inherit; }
 
 .center { text-align: center; }
 
+.form-page {
+  display: block;
+  background:
+    radial-gradient(circle at 80% 8%, rgba(91, 173, 137, 0.2), transparent 28rem),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+}
+
+.form-shell {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.form-shell .back-link {
+  display: inline-block;
+  margin: 0 0 24px;
+}
+
+.form-intro {
+  margin: 0 auto 26px;
+  text-align: center;
+}
+
+.form-shell h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+}
+
+.form-intro p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.form-page .large-form {
+  display: grid;
+  gap: 28px;
+  padding: clamp(20px, 4vw, 40px);
+  border: 1px solid rgba(18, 43, 44, 0.1);
+  border-radius: 22px;
+  background: #fff;
+  color: #182e30;
+  box-shadow: 0 24px 60px rgba(0, 12, 12, 0.24);
+}
+
+.form-section {
+  display: grid;
+  gap: 18px;
+}
+
+.form-page .large-form h2 {
+  margin: 0;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e6ece9;
+  color: #123c39;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 18px 20px;
+  align-items: start;
+}
+
+.account-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.resident-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.form-page .large-form label {
+  min-width: 0;
+  color: #31494a;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.form-page .large-form input,
+.form-page .large-form select {
+  min-width: 0;
+  min-height: 46px;
+  border: 1px solid #d5dfdb;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fbfcfb;
+  color: #172f30;
+}
+
+.form-page .large-form input:focus,
+.form-page .large-form select:focus {
+  outline: 2px solid rgba(13, 103, 88, 0.2);
+  border-color: #187568;
+}
+
+.wide-field { grid-column: span 2; }
+
+.form-page .large-form .terms {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: #31494a;
+  font-weight: 600;
+}
+
+.form-page .large-form .terms input {
+  flex: 0 0 18px;
+  width: 18px;
+  min-height: 18px;
+  margin: 0;
+  accent-color: #0d6758;
+}
+
+.form-actions {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+
+.form-actions .button { min-width: 190px; }
+.form-page .large-form .form-message { color: #123c39; }
+
 @media (max-width: 960px) {
   .public-header {
     flex-direction: column;
@@ -551,6 +669,15 @@ button, input, select, textarea { font: inherit; }
   .login-layout {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 850px) {
+  .form-page .account-grid,
+  .form-page .resident-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wide-field { grid-column: auto; }
 }
 
 @media (max-width: 640px) {
@@ -585,4 +712,11 @@ button, input, select, textarea { font: inherit; }
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .form-page { padding: 20px 14px 28px; }
+  .form-shell .back-link { margin-bottom: 18px; }
+  .form-page .account-grid,
+  .form-page .resident-grid { grid-template-columns: 1fr; }
+  .form-page .large-form { gap: 24px; }
+  .form-section { gap: 14px; }
 }

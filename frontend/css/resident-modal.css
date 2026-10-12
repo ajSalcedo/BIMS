@@ -1,0 +1,54 @@
+.resident-modal {
+  width: min(420px, calc(100% - 32px));
+  padding: 0;
+  border: 1px solid rgba(18, 43, 44, 0.12);
+  border-radius: 16px;
+  color: #173536;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.resident-modal::backdrop {
+  background: rgba(2, 22, 22, 0.44);
+}
+
+.resident-modal-content {
+  padding: 24px;
+}
+
+.resident-modal-content h2 {
+  margin: 0 0 10px;
+  color: #123c39;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+}
+
+.resident-modal-content p {
+  margin: 0;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.resident-modal-ok {
+  display: block;
+  min-width: 88px;
+  min-height: 40px;
+  margin: 22px 0 0 auto;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 10px;
+  color: #102d2d;
+  background: #e4bd48;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.resident-modal-ok:hover {
+  background: #d8ae37;
+}
+
+.resident-modal-ok:focus-visible {
+  outline: 3px solid rgba(13, 103, 88, 0.35);
+  outline-offset: 2px;
+}

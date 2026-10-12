@@ -29,11 +29,6 @@ if (concernForm) {
   concernForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const message = document.getElementById('message');
-    if (message) {
-      message.textContent = 'Submitting...';
-    }
-
     const categoryField = document.getElementById('category');
     const subjectField = document.getElementById('subject');
     const descriptionField = document.getElementById('description');
@@ -48,21 +43,23 @@ if (concernForm) {
       urgency: urgencyField ? urgencyField.value : ''
     };
 
-    const response = await fetch('/api/concerns', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
-    });
+    try {
+      const response = await fetch('/api/concerns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
 
-    const data = await response.json();
-
-    if (message) {
+      const data = await response.json();
       if (response.ok) {
-        message.textContent = `Submitted successfully. Tracking number: ${data.trackingNumber}`;
         event.target.reset();
+        await showResidentModal(`Submitted successfully. Tracking number: ${data.trackingNumber}`);
       } else {
-        message.textContent = data.message || 'Unable to submit concern.';
+        await showResidentModal(data.message || 'Unable to submit concern.');
       }
+    } catch (error) {
+      console.error('Unable to submit concern.', error);
+      await showResidentModal('Unable to connect to the server. Please try again.');
     }
   });
 }

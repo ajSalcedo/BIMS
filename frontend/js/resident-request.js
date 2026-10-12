@@ -2,7 +2,6 @@ const form = document.getElementById("requestForm");
 const serviceType = document.getElementById("serviceType");
 const copies = document.getElementById("copies");
 const fee = document.getElementById("fee");
-const message = document.getElementById("message");
 let services = [];
 
 async function loadServices() {
@@ -19,13 +18,24 @@ function updateFee() {
 }
 serviceType.addEventListener("change", updateFee); copies.addEventListener("input", updateFee);
 form.addEventListener("submit", async e => {
-  e.preventDefault(); message.textContent = "Submitting...";
-  const response = await fetch("/api/requests", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({
-    serviceType: serviceType.value, purpose: document.getElementById("purpose").value.trim(), copies: Number(copies.value), paymentMethod: document.getElementById("paymentMethod").value
-  })});
-  const data = await response.json();
-  if (response.ok) { message.textContent = `Request submitted. Tracking number: ${data.trackingNumber}`; form.reset(); copies.value=1; updateFee(); }
-  else message.textContent = data.message || "Unable to submit request.";
+  e.preventDefault();
+  try {
+    const response = await fetch("/api/requests", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({
+      serviceType: serviceType.value, purpose: document.getElementById("purpose").value.trim(), copies: Number(copies.value), paymentMethod: document.getElementById("paymentMethod").value
+    })});
+    const data = await response.json();
+    if (response.ok) {
+      form.reset();
+      copies.value = 1;
+      updateFee();
+      await showResidentModal(`Request submitted. Tracking number: ${data.trackingNumber}`);
+    } else {
+      await showResidentModal(data.message || "Unable to submit request.");
+    }
+  } catch (error) {
+    console.error("Unable to submit request.", error);
+    await showResidentModal("Unable to connect to the server. Please try again.");
+  }
 });
 document.getElementById("logoutButton").addEventListener("click", async () => {
   const response = await fetch("/api/resident-auth/logout", { method: "POST" });
