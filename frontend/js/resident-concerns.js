@@ -31,8 +31,9 @@ searchButton.onclick = () => {
 };
 
 logoutButton.onclick = async () => {
-  await fetch('/api/resident-auth/logout', { method: 'POST' });
-  location.href = '/';
+  const response = await fetch('/api/resident-auth/logout', { method: 'POST' });
+  if (!response.ok) throw new Error('Unable to log out.');
+  location.replace('/');
 };
 
 load();

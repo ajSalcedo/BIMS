@@ -3,53 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>E-Barangay Portal</title>
+  <title>Barangay Portal</title>
   <link rel="stylesheet" href="/css/global.css">
 </head>
-<body>
+<body class="public-page">
   <header class="public-header">
-    <div class="brand">⚪ <span>Brgy 12</span></div>
-    <nav>
-      <a href="/">Home</a>
-      <a href="#about">About</a>
-      <a href="#services">Services</a>
-      <a href="#officials">Officials</a>
-      <a href="#announcements">Announcement</a>
-      <a href="#map">Brgy. Map</a>
-      <a href="/resident/register.html">Register</a>
-      <a href="#contact">Contact</a>
-      <a href="/resident/login.html">Login</a>
+    <div class="brand-wrap">
+      <div class="brand-badge">B</div>
+      <span class="brand-name">[Barangay Name]</span>
+    </div>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Services</a>
+      <a href="#">Officials</a>
+      <a href="#">Announcements</a>
+      <a href="#">Barangay Map</a>
+      <a href="#">Contact</a>
+      <a href="/resident/regisForm.html">Register</a>
+      <a class="nav-login" id="accountLink" href="/resident/login.html">Log in</a>
     </nav>
   </header>
 
-  <main class="hero">
-    <section>
-      <p class="eyebrow">BARANGAY INFORMATION MANAGEMENT SYSTEM</p>
-      <h1>E-Barangay Portal</h1>
-      <p class="hero-copy">
-        A Barangay Portal System is an online platform designed to organize
-        resident information and make barangay services easier to access.
+  <main class="public-hero">
+    <section class="hero-copy-panel">
+      <h1>
+        Your Barangay<br>
+        Services, Made<br>
+        Easier.
+      </h1>
+
+      <p>
+        Register once, request barangay documents online, and follow every
+        step from submission to pickup, without repeated trips to the barangay hall.
       </p>
-      <a class="button light-button" href="#about">About</a>
+
+      <div class="cta-row">
+        <a href="/resident/regisForm.html" id="primaryAction" class="primary-btn">Register Now</a>
+        <a href="/resident/request.html" class="secondary-btn">Explore Services</a>
+      </div>
+
+      <div class="quick-links" aria-label="Quick service links">
+        <span>📄 Request a document</span>
+        <span>🧾 Resident registration</span>
+        <span>📍 Contact the office</span>
+      </div>
     </section>
 
-    <section class="service-grid" id="services">
-      <article class="service-card">
-        <div class="service-icon">▤</div>
-        <h2>E-Service</h2>
-        <p>Resident services and document requests.</p>
-      </article>
-      <article class="service-card">
-        <div class="service-icon">♙</div>
-        <h2>Brgy. Officials</h2>
-        <p>View barangay officials and information.</p>
-      </article>
-      <article class="service-card">
-        <div class="service-icon">◈</div>
-        <h2>Announcement</h2>
-        <p>Read barangay announcements and updates.</p>
-      </article>
+    <section class="hero-card" aria-label="Latest resident request" aria-live="polite">
+      <div class="card-tag" id="requestTag">Sample request</div>
+      <div class="card-header">
+        <span class="request-label" id="requestService">Certificate of Residency</span>
+        <span class="request-code" id="requestCode">DOC-2026-K7M39QXA</span>
+      </div>
+
+      <p class="card-subtitle" id="requestUpdated">Updated a few minutes ago</p>
+
+      <div class="progress-rail" id="requestProgress" aria-label="Request progress">
+        <span class="step active"></span>
+        <span class="step active"></span>
+        <span class="step current"></span>
+        <span class="step"></span>
+      </div>
+
+      <div class="progress-labels" id="requestProgressLabels">
+        <span>Pending</span>
+        <span>Processing</span>
+        <span>Ready</span>
+        <span>Done</span>
+      </div>
+
+      <div class="card-meta">
+        <div>
+          <small>Document</small>
+          <strong id="requestStatus">Ready for pickup</strong>
+        </div>
+        <div>
+          <small>Payment</small>
+          <strong id="requestPayment">Verified by staff</strong>
+        </div>
+      </div>
     </section>
   </main>
+
+  <section class="stats-row" aria-label="Barangay statistics">
+    <article class="stat-box">
+      <strong id="verifiedResidents" aria-live="polite">Loading...</strong>
+      <span>Verified residents</span>
+    </article>
+    <article class="stat-box">
+      <strong id="completedRequests" aria-live="polite">Loading...</strong>
+      <span>Requests completed</span>
+    </article>
+  </section>
+  <script src="/js/landing.js"></script>
 </body>
 </html>

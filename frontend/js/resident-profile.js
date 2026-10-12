@@ -62,7 +62,8 @@ function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
 }
 document.getElementById("logoutButton").addEventListener("click", async () => {
-  await fetch("/api/resident-auth/logout", { method: "POST" });
-  window.location.href = "/";
+  const response = await fetch("/api/resident-auth/logout", { method: "POST" });
+  if (!response.ok) throw new Error("Unable to log out.");
+  window.location.replace("/");
 });
 loadProfile();
