@@ -7,7 +7,6 @@ const router = express.Router();
 const profileSelect = `
   SELECT
     rp.*,
-    ru.username,
     ru.email,
     h.household_number,
     h.household_address,

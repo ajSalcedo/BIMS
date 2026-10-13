@@ -149,10 +149,10 @@ button, input, select, textarea { font: inherit; }
 
 .hero-copy-panel h1 {
   margin: 0;
-  font-size: clamp(4.1rem, 6vw, 7rem);
+  font-size: clamp(3rem, 5vw, 6rem);
   line-height: 0.92;
   letter-spacing: -0.06em;
-  font-weight: 600;
+  font-weight: 400;
   font-family: Georgia, "Times New Roman", serif;
   color: #f5f0eb;
 }
@@ -508,8 +508,8 @@ button, input, select, textarea { font: inherit; }
 }
 
 .button {
-  background: linear-gradient(180deg, #f4cf5d 0%, #ddb948 100%);
-  color: #112c2f;
+  background: linear-gradient(180deg, #023020 0%, #012e08 100%);
+  color: #FFFFFF;
 }
 
 .secondary-button {
@@ -573,15 +573,25 @@ button, input, select, textarea { font: inherit; }
 .form-section {
   display: grid;
   gap: 18px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 16px 16px;
+  border: 1px solid #d5dfdb;
+  border-radius: 10px;
 }
 
-.form-page .large-form h2 {
-  margin: 0;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e6ece9;
+.form-section legend {
+  padding: 0 8px;
   color: #123c39;
   font-family: Georgia, "Times New Roman", serif;
   font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.form-note {
+  margin: -4px 0 0;
+  color: #526767;
+  font-size: 0.88rem;
 }
 
 .form-grid {
@@ -605,9 +615,9 @@ button, input, select, textarea { font: inherit; }
   min-width: 0;
   min-height: 46px;
   border: 1px solid #d5dfdb;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px 12px;
-  background: #fbfcfb;
+  background: #fff;
   color: #172f30;
 }
 
@@ -633,6 +643,44 @@ button, input, select, textarea { font: inherit; }
   width: 18px;
   min-height: 18px;
   margin: 0;
+  accent-color: #0d6758;
+}
+
+.privacy-notice {
+  display: grid;
+  gap: 6px;
+  padding: 22px 20px;
+  border: 1px solid #d5dfdb;
+  border-radius: 8px;
+  color: #182e30;
+}
+
+.privacy-notice h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.privacy-notice p {
+  max-width: 620px;
+  margin: 0;
+  color: #526a8a;
+  line-height: 1.5;
+}
+
+.privacy-consent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #182e30;
+  font-weight: 700;
+}
+
+.form-page .large-form .privacy-consent input {
+  flex: 0 0 13px;
+  width: 13px;
+  min-height: 13px;
+  margin: 0 0 0 4px;
   accent-color: #0d6758;
 }
 

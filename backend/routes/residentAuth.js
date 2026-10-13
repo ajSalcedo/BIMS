@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/register", async (req, res) => {
   const {
-    username, email, password,
+    email, password, householdNumber,
     firstName, middleName, lastName, suffix,
     birthDate, sex, civilStatus, placeOfBirth,
     nationality, religion, address, purok, contactNumber,
@@ -16,9 +16,17 @@ router.post("/register", async (req, res) => {
     emergencyContactNumber
   } = req.body;
 
-  if (!username || !password || !firstName || !lastName || !birthDate ||
+  const normalizedEmail = typeof email === "string" ? email.trim().toLowerCase() : "";
+  const normalizedContactNumber = typeof contactNumber === "string" ? contactNumber.trim() : "";
+  const normalizedHouseholdNumber = typeof householdNumber === "string" ? householdNumber.trim() : "";
+
+  if ((!normalizedEmail && !normalizedContactNumber) ||
+      typeof password !== "string" || !password ||
+      !firstName || !lastName || !birthDate ||
       !sex || !civilStatus || !address || !purok) {
-    return res.status(400).json({ message: "Please complete all required fields." });
+    return res.status(400).json({
+      message: "Complete all required fields and provide an email address or contact number."
+    });
   }
 
   if (password.length < 8) {
@@ -31,35 +39,51 @@ router.post("/register", async (req, res) => {
     await connection.beginTransaction();
 
     const [existing] = await connection.execute(
-      "SELECT resident_user_id FROM resident_users WHERE username = ? OR (email IS NOT NULL AND email = ?)",
-      [username, email || null]
+      `SELECT ru.resident_user_id
+       FROM resident_users ru
+       WHERE ru.email = ? OR ru.contact_number = ?
+       LIMIT 1`,
+      [normalizedEmail || null, normalizedContactNumber || null]
     );
 
     if (existing.length) {
       await connection.rollback();
-      return res.status(409).json({ message: "Username or email is already registered." });
+      return res.status(409).json({ message: "Email or contact number is already registered." });
+    }
+
+    let householdId = null;
+    if (normalizedHouseholdNumber) {
+      const [households] = await connection.execute(
+        "SELECT household_id FROM households WHERE household_number = ?",
+        [normalizedHouseholdNumber]
+      );
+      if (!households.length) {
+        await connection.rollback();
+        return res.status(400).json({ message: "Household number was not found." });
+      }
+      householdId = households[0].household_id;
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
 
     const [userResult] = await connection.execute(
-      `INSERT INTO resident_users (username, email, password_hash)
+      `INSERT INTO resident_users (email, contact_number, password_hash)
        VALUES (?, ?, ?)`,
-      [username, email || null, passwordHash]
+      [normalizedEmail || null, normalizedContactNumber || null, passwordHash]
     );
 
     const [profileResult] = await connection.execute(
       `INSERT INTO resident_profiles
-      (resident_user_id, first_name, middle_name, last_name, suffix, birth_date,
+      (resident_user_id, household_id, first_name, middle_name, last_name, suffix, birth_date,
        sex, civil_status, place_of_birth, nationality, religion, address, purok,
        contact_number, years_of_residency, employment_status, occupation,
        educational_attainment, blood_type, disability_status, voter_status,
        relationship_to_head, emergency_contact, emergency_contact_number)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        userResult.insertId, firstName, middleName || null, lastName, suffix || null,
+        userResult.insertId, householdId, firstName, middleName || null, lastName, suffix || null,
         birthDate, sex, civilStatus, placeOfBirth || null, nationality || null,
-        religion || null, address, purok, contactNumber || null,
+        religion || null, address, purok, normalizedContactNumber || null,
         yearsOfResidency || null, employmentStatus || null, occupation || null,
         educationalAttainment || null, bloodType || null,
         disabilityStatus || null, voterStatus || "Unknown",
@@ -72,8 +96,7 @@ router.post("/register", async (req, res) => {
 
     req.session.residentUser = {
       residentUserId: userResult.insertId,
-      residentId: profileResult.insertId,
-      username
+      residentId: profileResult.insertId
     };
 
     res.status(201).json({
@@ -90,36 +113,37 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
+  const { identifier, password } = req.body;
+  const loginIdentifier = typeof identifier === "string" ? identifier.trim() : "";
 
-  if (!username || !password) {
-    return res.status(400).json({ message: "Username and password are required." });
+  if (!loginIdentifier || typeof password !== "string" || !password) {
+    return res.status(400).json({ message: "Email or contact number and password are required." });
   }
 
   try {
     const [rows] = await pool.execute(
-      `SELECT ru.resident_user_id, ru.username, ru.password_hash, ru.account_status,
-              rp.resident_id
+      `SELECT ru.resident_user_id, ru.password_hash, ru.account_status, rp.resident_id
        FROM resident_users ru
        LEFT JOIN resident_profiles rp ON rp.resident_user_id = ru.resident_user_id
-       WHERE ru.username = ?`,
-      [username]
+       WHERE ru.email = ? OR ru.contact_number = ?`,
+      [loginIdentifier, loginIdentifier]
     );
 
-    if (!rows.length || rows[0].account_status !== "Active") {
-      return res.status(401).json({ message: "Invalid resident login." });
-    }
+    const matches = await Promise.all(rows.map(async (row) => ({
+      row,
+      validPassword: await bcrypt.compare(password, row.password_hash)
+    })));
+    const match = matches.find(({ row, validPassword }) =>
+      validPassword && row.account_status === "Active"
+    );
 
-    const valid = await bcrypt.compare(password, rows[0].password_hash);
-
-    if (!valid) {
+    if (!match) {
       return res.status(401).json({ message: "Invalid resident login." });
     }
 
     req.session.residentUser = {
-      residentUserId: rows[0].resident_user_id,
-      residentId: rows[0].resident_id,
-      username: rows[0].username
+      residentUserId: match.row.resident_user_id,
+      residentId: match.row.resident_id
     };
 
     res.json({ message: "Login successful." });

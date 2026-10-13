@@ -111,9 +111,8 @@ router.get("/admin/:id", requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.execute(
       `SELECT cc.*, CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
-              rp.contact_number, rp.address, rp.purok, ru.username, au.full_name AS assigned_to_name
+              rp.contact_number, rp.address, rp.purok, au.full_name AS assigned_to_name
        FROM community_concerns cc JOIN resident_profiles rp ON rp.resident_id = cc.resident_id
-       LEFT JOIN resident_users ru ON ru.resident_user_id = rp.resident_user_id
        LEFT JOIN admin_users au ON au.admin_id = cc.assigned_to WHERE cc.concern_id = ?`, [req.params.id]
     );
     if (!rows.length) return res.status(404).json({ message: "Concern not found." });

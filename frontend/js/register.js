@@ -3,6 +3,14 @@ document.getElementById("registerForm").addEventListener("submit", async (e) => 
 
   const form = e.currentTarget;
   const data = Object.fromEntries(new FormData(form).entries());
+  data.email = data.email.trim();
+  data.contactNumber = data.contactNumber.trim();
+
+  if (!data.email && !data.contactNumber) {
+    await showResidentModal("Provide an email address or contact number to use for login.");
+    return;
+  }
+
   if (data.password !== data.confirmPassword) {
     await showResidentModal("Passwords do not match.");
     return;

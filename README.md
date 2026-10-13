@@ -30,6 +30,13 @@ SOURCE database/bims.sql;
 
 Or open `database/bims.sql` and execute it.
 
+For an existing database, run `database/resident_username_migration.sql` once to
+remove the resident username column.
+
+For an existing database, run `database/resident_contact_mirror_migration.sql`
+once to add the resident account contact number and keep it synchronized with
+the resident profile.
+
 For an existing database created before admin account profile editing was added, run
 `database/admin_profile_migration.sql` once to add the admin address and contact fields.
 
@@ -147,4 +154,7 @@ Subsystem 2 adds resident document/service requests and separate admin processin
 Other terminal statuses available to staff are `Rejected` and `Cancelled`.
 
 ### Database setup
-Run `database/subsystem2.sql` after the original `database/bims.sql` in MySQL Workbench.
+At the Terminal in VSC:
+First, run `database/bims.sql`
+Second, run `database/subsystem2.sql`
+Lastly, run `database/subsystem3.sql`

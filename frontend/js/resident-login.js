@@ -6,7 +6,7 @@ document.getElementById("residentLoginForm").addEventListener("submit", async (e
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        username: document.getElementById("username").value.trim(),
+        identifier: document.getElementById("identifier").value.trim(),
         password: document.getElementById("password").value
       })
     });

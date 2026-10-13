@@ -18,12 +18,13 @@ CREATE TABLE IF NOT EXISTS households (
 
 CREATE TABLE IF NOT EXISTS resident_users (
     resident_user_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(80) NOT NULL UNIQUE,
     email VARCHAR(150) NULL UNIQUE,
+    contact_number VARCHAR(30) NULL,
     password_hash VARCHAR(255) NOT NULL,
     account_status ENUM('Active', 'Inactive') NOT NULL DEFAULT 'Active',
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    INDEX idx_resident_user_contact (contact_number)
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS resident_profiles (
@@ -72,6 +73,42 @@ CREATE TABLE IF NOT EXISTS resident_profiles (
     INDEX idx_resident_address (address),
     INDEX idx_resident_purok (purok)
 ) ENGINE=InnoDB;
+
+DELIMITER //
+CREATE TRIGGER sync_resident_contact_after_insert
+AFTER INSERT ON resident_profiles
+FOR EACH ROW
+BEGIN
+    UPDATE resident_users
+    SET contact_number = NEW.contact_number
+    WHERE resident_user_id = NEW.resident_user_id;
+END//
+
+CREATE TRIGGER sync_resident_contact_after_update
+AFTER UPDATE ON resident_profiles
+FOR EACH ROW
+BEGIN
+    IF OLD.resident_user_id IS NOT NULL
+       AND NOT (OLD.resident_user_id <=> NEW.resident_user_id) THEN
+        UPDATE resident_users
+        SET contact_number = NULL
+        WHERE resident_user_id = OLD.resident_user_id;
+    END IF;
+
+    UPDATE resident_users
+    SET contact_number = NEW.contact_number
+    WHERE resident_user_id = NEW.resident_user_id;
+END//
+
+CREATE TRIGGER sync_resident_contact_after_delete
+AFTER DELETE ON resident_profiles
+FOR EACH ROW
+BEGIN
+    UPDATE resident_users
+    SET contact_number = NULL
+    WHERE resident_user_id = OLD.resident_user_id;
+END//
+DELIMITER ;
 
 ALTER TABLE households
     ADD CONSTRAINT fk_household_head

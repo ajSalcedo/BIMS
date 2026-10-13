@@ -177,10 +177,9 @@ router.get("/admin/:id", requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.execute(
       `SELECT sr.*, CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
-              rp.contact_number, rp.address, rp.purok, ru.username
+              rp.contact_number, rp.address, rp.purok
        FROM service_requests sr
        JOIN resident_profiles rp ON rp.resident_id = sr.resident_id
-       LEFT JOIN resident_users ru ON ru.resident_user_id = rp.resident_user_id
        WHERE sr.request_id = ?`,
       [req.params.id]
     );
