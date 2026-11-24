@@ -11,6 +11,7 @@ Tech stack:
 - MySQL
 - mysql2
 - bcrypt
+- multer
 - express-session
 
 ## 1. Requirements
@@ -32,6 +33,12 @@ Or open `database/bims.sql` and execute it.
 
 For an existing database created before admin account profile editing was added, run
 `database/admin_profile_migration.sql` once to add the admin address and contact fields.
+
+For an existing database, first run `database/normalization_migration.sql` if it has
+not already been applied, then run `database/resident_registration_overhaul_migration.sql`
+once. Before the registration migration, resolve duplicate resident contact numbers
+(the migration includes a query to find them). Fresh databases already include the
+updated resident-registration schema.
 
 ## 3. Configure environment variables
 
@@ -86,8 +93,12 @@ http://localhost:3000
 
 ### Public / Resident side
 - Landing page
-- Resident registration
-- Resident login
+- Six-step resident registration with personal, contact, permanent/present address,
+  household, account, and review sections
+- Resident login using a unique Philippine mobile number as the username
+- Optional email and preferred notification method
+- Required proof-of-residency upload (JPG, PNG, or PDF, up to 5 MB), stored in MySQL
+- Private proof-document download for the resident and authorized admins
 - Resident dashboard
 - View own resident profile
 - View household information
@@ -110,6 +121,7 @@ Residents and admins are separate account types:
 
 ```text
 resident_users -> resident_profiles -> households
+                   -> resident_proof_documents
 admin_users
 ```
 
@@ -147,4 +159,17 @@ Subsystem 2 adds resident document/service requests and separate admin processin
 Other terminal statuses available to staff are `Rejected` and `Cancelled`.
 
 ### Database setup
-Run `database/subsystem2.sql` after the original `database/bims.sql` in MySQL Workbench.
+At the Terminal in VSC:
+First, run `database/bims.sql`
+Second, run `database/subsystem2.sql`
+Lastly, run `database/subsystem3.sql`
+
+For existing databases, apply the migrations in section 2 in order. See
+`DATABASE_NORMALIZATION_REVIEW.txt` for the normalization review and
+`RESIDENT_REGISTRATION_OVERHAUL.txt` for registration details.
+
+### Database diagrams
+See `docs/BIMS_DATABASE_DIAGRAMS.md` for:
+- The complete database ERD
+- An individual ERD for each of the 12 tables
+- A data/process flowchart for each table

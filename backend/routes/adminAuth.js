@@ -13,7 +13,9 @@ router.post("/login", async (req, res) => {
 
   try {
     const [rows] = await pool.execute(
-      `SELECT admin_id, username, full_name, password_hash, role, account_status
+      `SELECT admin_id, username,
+              CONCAT_WS(' ', first_name, last_name) AS full_name,
+              password_hash, role, account_status
        FROM admin_users WHERE username = ?`,
       [username]
     );
@@ -56,7 +58,7 @@ router.get("/profile", async (req, res) => {
 
   try {
     const [rows] = await pool.execute(
-      `SELECT username, first_name, last_name, full_name, email, address, contact_number
+      `SELECT username, first_name, last_name, email, address, contact_number
        FROM admin_users WHERE admin_id = ?`,
       [req.session.adminUser.adminId]
     );
@@ -66,14 +68,11 @@ router.get("/profile", async (req, res) => {
     }
 
     const admin = rows[0];
-    const nameParts = admin.full_name.trim().split(/\s+/);
-    const fallbackFirstName = nameParts.shift() || "";
-    const fallbackLastName = nameParts.join(" ");
     res.json({
       profile: {
         username: admin.username,
-        firstName: admin.first_name || fallbackFirstName,
-        lastName: admin.last_name || fallbackLastName,
+        firstName: admin.first_name,
+        lastName: admin.last_name,
         email: admin.email || "",
         address: admin.address || "",
         contactNumber: admin.contact_number || ""
@@ -99,15 +98,13 @@ router.put("/profile", async (req, res) => {
   const contactNumber = typeof body.contactNumber === "string" ? body.contactNumber.trim() : "";
   const currentPassword = typeof body.currentPassword === "string" ? body.currentPassword : "";
   const newPassword = typeof body.newPassword === "string" ? body.newPassword : "";
-  const fullName = [firstName, lastName].filter(Boolean).join(" ");
-
   if (!username || !firstName || !lastName) {
     return res.status(400).json({ message: "Username, first name, and last name are required." });
   }
   if (username.length > 80 || firstName.length > 75 || lastName.length > 75) {
     return res.status(400).json({ message: "Username and name fields are too long." });
   }
-  if (fullName.length > 150 || email.length > 150 || address.length > 255 || contactNumber.length > 30) {
+  if (email.length > 150 || address.length > 255 || contactNumber.length > 30) {
     return res.status(400).json({ message: "One or more profile fields are too long." });
   }
   if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -134,10 +131,10 @@ router.put("/profile", async (req, res) => {
       return res.status(403).json({ message: "Current password is incorrect." });
     }
 
-    const values = [username, firstName, lastName, fullName, email || null, address || null, contactNumber || null];
+    const values = [username, firstName, lastName, email || null, address || null, contactNumber || null];
     let updateQuery =
       `UPDATE admin_users
-       SET username = ?, first_name = ?, last_name = ?, full_name = ?, email = ?, address = ?, contact_number = ?`;
+       SET username = ?, first_name = ?, last_name = ?, email = ?, address = ?, contact_number = ?`;
 
     if (newPassword) {
       updateQuery += ", password_hash = ?";
@@ -148,7 +145,7 @@ router.put("/profile", async (req, res) => {
 
     await pool.execute(updateQuery, values);
     req.session.adminUser.username = username;
-    req.session.adminUser.fullName = fullName;
+    req.session.adminUser.fullName = [firstName, lastName].filter(Boolean).join(" ");
     res.json({ message: "Account details updated." });
   } catch (error) {
     if (error.code === "ER_DUP_ENTRY") {
@@ -195,11 +192,14 @@ router.post("/users", async (req, res) => {
     }
 
     const hash = await bcrypt.hash(password, 12);
+    const nameParts = fullName.trim().split(/\s+/);
+    const firstName = nameParts.shift() || "";
+    const lastName = nameParts.join(" ") || firstName;
 
     await pool.execute(
-      `INSERT INTO admin_users (username, full_name, email, password_hash, role)
-       VALUES (?, ?, ?, ?, ?)`,
-      [username, fullName, email || null, hash, role]
+      `INSERT INTO admin_users (username, first_name, last_name, email, password_hash, role)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [username, firstName, lastName, email || null, hash, role]
     );
 
     res.status(201).json({ message: "Admin account created." });

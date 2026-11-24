@@ -3,75 +3,181 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Resident Account | BIMS</title>
+  <title>Resident Registration | BIMS</title>
   <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/resident-modal.css">
 </head>
 <body class="form-page">
-  <main class="form-shell">
+  <main class="form-shell registration-shell">
     <a class="back-link" href="/">← Back to Portal</a>
-    <h1>Create Resident Account</h1>
-    <p class="notice">Fields marked with * are required. Only collect information needed for the barangay system.</p>
+    <header class="form-intro registration-intro">
+      <h1>BIMS Resident Registration Form</h1>
+      <p>Information is collected step by step. Required fields are marked with *.</p>
+    </header>
 
-    <form id="registerForm" class="large-form">
-      <h2>Account Information</h2>
-      <div class="form-grid">
-        <label>Username *<input name="username" required minlength="4"></label>
-        <label>Email<input name="email" type="email"></label>
-        <label>Password *<input name="password" type="password" required minlength="8"></label>
-        <label>Confirm Password *<input name="confirmPassword" type="password" required minlength="8"></label>
-      </div>
+    <ol class="registration-progress" aria-label="Registration progress">
+      <li class="active" aria-current="step">1 Personal</li>
+      <li>2 Contact</li>
+      <li>3 Address</li>
+      <li>4 Household</li>
+      <li>5 Account</li>
+      <li>6 Review</li>
+    </ol>
 
-      <h2>Resident Information</h2>
-      <div class="form-grid">
-        <label>First Name *<input name="firstName" required></label>
-        <label>Middle Name<input name="middleName"></label>
-        <label>Last Name *<input name="lastName" required></label>
-        <label>Suffix<input name="suffix"></label>
-        <label>Birth Date *<input name="birthDate" type="date" required></label>
-        <label>Sex *
-          <select name="sex" required>
-            <option value="">Select</option><option>Male</option><option>Female</option>
-            <option>Other</option><option>Prefer not to say</option>
-          </select>
+    <form id="registerForm" class="large-form registration-form" novalidate>
+      <fieldset class="form-section registration-step" data-step="0">
+        <legend>1 &nbsp; Personal</legend>
+        <div class="form-grid resident-grid">
+          <label>Last name *<input name="lastName" required maxlength="80" autocomplete="family-name"></label>
+          <label>First name *<input name="firstName" required maxlength="80" autocomplete="given-name"></label>
+          <label>Middle name<input name="middleName" maxlength="80" autocomplete="additional-name"></label>
+          <label>Suffix<input name="suffix" maxlength="20" placeholder="Jr., Sr., III"></label>
+          <label>Date of birth *<input name="birthDate" type="date" required></label>
+          <label>Age (auto-calculated)<output id="ageDisplay" class="registration-output">—</output></label>
+          <label>Sex
+            <select name="sex">
+              <option value="">Select</option>
+              <option>Male</option><option>Female</option><option>Other</option>
+              <option>Prefer not to say</option>
+            </select>
+          </label>
+          <label>Civil status
+            <select name="civilStatus">
+              <option value="">Select</option>
+              <option>Single</option><option>Married</option><option>Widowed</option>
+              <option>Separated</option><option>Other</option>
+            </select>
+          </label>
+          <label>Citizenship *<input name="citizenship" required maxlength="100" value="Filipino"></label>
+        </div>
+        <div class="form-actions step-actions">
+          <button class="button" type="button" data-next>Continue</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section registration-step" data-step="1" hidden>
+        <legend>2 &nbsp; Contact</legend>
+        <div class="form-grid account-grid">
+          <label>Mobile number *<input name="contactNumber" type="tel" required maxlength="30" autocomplete="tel" inputmode="tel" placeholder="09XXXXXXXXX"></label>
+          <label>Email address<input name="email" type="email" maxlength="150" autocomplete="email"></label>
+          <label>Preferred notification
+            <select name="preferredNotification">
+              <option value="">Select (optional)</option>
+              <option value="SMS">SMS</option><option value="Email">Email</option><option value="Both">Both</option>
+            </select>
+          </label>
+        </div>
+        <p class="form-note">Your mobile number is your resident username and must be unique.</p>
+        <div class="form-actions step-actions">
+          <button class="button secondary-button" type="button" data-previous>Previous</button>
+          <button class="button" type="button" data-next>Continue</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section registration-step" data-step="2" hidden>
+        <legend>3 &nbsp; Address</legend>
+        <h2 class="address-heading">Permanent address</h2>
+        <div class="form-grid resident-grid">
+          <label>Region *<input name="permanentRegion" required maxlength="100"></label>
+          <label>Province *<input name="permanentProvince" required maxlength="100"></label>
+          <label>City / municipality *<input name="permanentCityMunicipality" required maxlength="100"></label>
+          <label>Barangay *<input name="permanentBarangay" required maxlength="100"></label>
+          <label>Purok / sitio / zone *<input name="permanentPurok" required maxlength="100"></label>
+          <label>Street<input name="permanentStreet" maxlength="150"></label>
+          <label>House number<input name="permanentHouseNumber" maxlength="50"></label>
+          <label>ZIP code<input name="permanentZipCode" maxlength="20" inputmode="numeric"></label>
+        </div>
+
+        <h2 class="address-heading">Present address</h2>
+        <label class="checkbox-label same-address">
+          <input type="checkbox" name="presentAddressSameAsPermanent" value="true" checked>
+          <span>Same as permanent address</span>
         </label>
-        <label>Civil Status *
-          <select name="civilStatus" required>
-            <option value="">Select</option><option>Single</option><option>Married</option>
-            <option>Widowed</option><option>Separated</option><option>Other</option>
-          </select>
-        </label>
-        <label>Place of Birth<input name="placeOfBirth"></label>
-        <label>Nationality<input name="nationality" value="Filipino"></label>
-        <label>Religion<input name="religion"></label>
-        <label>Complete Address *<input name="address" required></label>
-        <label>Purok *<input name="purok" required></label>
-        <label>Contact Number<input name="contactNumber"></label>
-        <label>Years of Residency<input name="yearsOfResidency" type="number" min="0" step="0.1"></label>
-        <label>Employment Status<input name="employmentStatus"></label>
-        <label>Occupation<input name="occupation"></label>
-        <label>Educational Attainment<input name="educationalAttainment"></label>
-        <label>Blood Type<input name="bloodType"></label>
-        <label>Disability / Special Needs<input name="disabilityStatus"></label>
-        <label>Voter Status
-          <select name="voterStatus">
-            <option>Unknown</option><option>Registered</option><option>Not Registered</option>
-          </select>
-        </label>
-        <label>Relationship to Household Head<input name="relationshipToHead"></label>
-        <label>Emergency Contact Person<input name="emergencyContact"></label>
-        <label>Emergency Contact Number<input name="emergencyContactNumber"></label>
-      </div>
+        <div class="form-grid resident-grid" id="presentAddressFields">
+          <label>Region<input name="presentRegion" maxlength="100" readonly></label>
+          <label>Province<input name="presentProvince" maxlength="100" readonly></label>
+          <label>City / municipality<input name="presentCityMunicipality" maxlength="100" readonly></label>
+          <label>Barangay<input name="presentBarangay" maxlength="100" readonly></label>
+          <label>Purok / sitio / zone<input name="presentPurok" maxlength="100" readonly></label>
+          <label>Street<input name="presentStreet" maxlength="150" readonly></label>
+          <label>House number<input name="presentHouseNumber" maxlength="50" readonly></label>
+          <label>ZIP code<input name="presentZipCode" maxlength="20" readonly></label>
+        </div>
+        <div class="form-grid account-grid">
+          <label>Years of residency<input name="yearsOfResidency" type="number" min="0" max="150" step="0.1"></label>
+          <label>Landmark<input name="landmark" maxlength="255"></label>
+          <label class="wide-field">Previous address<input name="previousAddress" maxlength="1000"></label>
+        </div>
+        <div class="form-actions step-actions">
+          <button class="button secondary-button" type="button" data-previous>Previous</button>
+          <button class="button" type="button" data-next>Continue</button>
+        </div>
+      </fieldset>
 
-      <label class="checkbox-label terms">
-        <input type="checkbox" id="terms" required>
-        I agree to the Terms and Conditions.
-      </label>
+      <fieldset class="form-section registration-step" data-step="3" hidden>
+        <legend>4 &nbsp; Household</legend>
+        <div class="form-grid account-grid">
+          <label>Household reference number<input name="householdReferenceNumber" maxlength="30" autocomplete="off"></label>
+          <label>Relationship to household head *<input name="relationshipToHead" required maxlength="80"></label>
+          <label>Household size<input name="householdSize" type="number" min="1" max="100" step="1"></label>
+          <label>Occupation<input name="occupation" maxlength="100"></label>
+        </div>
+        <p class="form-note">If provided, the household reference number must already exist in BIMS.</p>
+        <div class="form-actions step-actions">
+          <button class="button secondary-button" type="button" data-previous>Previous</button>
+          <button class="button" type="button" data-next>Continue</button>
+        </div>
+      </fieldset>
 
-      <button class="button" type="submit">Create Account</button>
-      <p id="message" class="form-message"></p>
+      <fieldset class="form-section registration-step" data-step="4" hidden>
+        <legend>5 &nbsp; Account</legend>
+        <div class="form-grid account-grid">
+          <label>Proof of residency: document type *
+            <select name="proofDocumentType" required>
+              <option value="">Select document type</option>
+              <option>Utility Bill</option><option>Barangay Certificate</option>
+              <option>Lease / Rental Agreement</option><option>Government-issued ID</option>
+              <option>Other</option>
+            </select>
+          </label>
+          <label>Proof of residency: file (JPG, PNG, or PDF; up to 5 MB) *
+            <input name="proofOfResidency" type="file" required accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf">
+          </label>
+          <label>Password *
+            <input name="password" type="password" required minlength="10" autocomplete="new-password" aria-describedby="passwordHelp">
+          </label>
+          <label>Confirm password *
+            <input name="confirmPassword" type="password" required minlength="10" autocomplete="new-password">
+          </label>
+        </div>
+        <p class="form-note" id="passwordHelp">Use at least 10 characters, including letters and numbers.</p>
+        <div class="form-actions step-actions">
+          <button class="button secondary-button" type="button" data-previous>Previous</button>
+          <button class="button" type="button" data-next>Review</button>
+        </div>
+      </fieldset>
+
+      <fieldset class="form-section registration-step" data-step="5" hidden>
+        <legend>6 &nbsp; Review</legend>
+        <div id="registrationReview" class="registration-review" aria-live="polite"></div>
+        <section class="privacy-notice" aria-labelledby="privacyNoticeTitle">
+          <h2 id="privacyNoticeTitle">Terms &amp; Privacy Notice</h2>
+          <p>The barangay collects your information to verify residency and deliver barangay services, under the Data Privacy Act of 2012 (RA 10173). Your proof-of-residency document is stored with your registration and is only available to authorized users.</p>
+          <label class="checkbox-label privacy-consent">
+            <input type="checkbox" name="privacyConsent" value="true" required>
+            <span>I agree to the terms and privacy notice and consent to processing of my information.</span>
+          </label>
+        </section>
+        <div class="form-actions step-actions">
+          <button class="button secondary-button" type="button" data-previous>Previous</button>
+          <button class="button" type="submit">Create account</button>
+          <p id="registrationMessage" class="form-message" role="status"></p>
+        </div>
+      </fieldset>
     </form>
   </main>
 
+  <script src="/js/resident-modal.js"></script>
   <script src="/js/register.js"></script>
 </body>
 </html>

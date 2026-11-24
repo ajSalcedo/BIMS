@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Request Document | BIMS</title><link rel="stylesheet" href="/css/portal.css">
+  <title>Request Document | BIMS</title><link rel="stylesheet" href="/css/portal.css"><link rel="stylesheet" href="/css/resident-modal.css">
 </head>
 <body>
   <aside class="sidebar">
@@ -33,7 +33,6 @@
           <div class="fee-box">Estimated Fee: <strong id="fee">₱0.00</strong></div>
           <p class="muted small">Online payment is recorded as a payment method in this version. Actual payment gateway integration is not included yet.</p>
           <button class="button" type="submit">Submit Request</button>
-          <p id="message" class="form-message"></p>
         </form>
       </div>
       <aside class="dashboard-card instructions">
@@ -43,6 +42,7 @@
       </aside>
     </section>
   </main>
+  <script src="/js/resident-modal.js"></script>
   <script src="/js/resident-request.js"></script>
   <script src="/js/resident-auth.js"></script>
 </body>

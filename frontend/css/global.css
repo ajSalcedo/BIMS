@@ -149,10 +149,10 @@ button, input, select, textarea { font: inherit; }
 
 .hero-copy-panel h1 {
   margin: 0;
-  font-size: clamp(4.1rem, 6vw, 7rem);
+  font-size: clamp(3rem, 5vw, 6rem);
   line-height: 0.92;
   letter-spacing: -0.06em;
-  font-weight: 600;
+  font-weight: 400;
   font-family: Georgia, "Times New Roman", serif;
   color: #f5f0eb;
 }
@@ -508,8 +508,8 @@ button, input, select, textarea { font: inherit; }
 }
 
 .button {
-  background: linear-gradient(180deg, #f4cf5d 0%, #ddb948 100%);
-  color: #112c2f;
+  background: linear-gradient(180deg, #023020 0%, #012e08 100%);
+  color: #FFFFFF;
 }
 
 .secondary-button {
@@ -526,6 +526,270 @@ button, input, select, textarea { font: inherit; }
 }
 
 .center { text-align: center; }
+
+.form-page {
+  display: block;
+  background:
+    radial-gradient(circle at 80% 8%, rgba(91, 173, 137, 0.2), transparent 28rem),
+    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-mid) 100%);
+}
+
+.form-shell {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+}
+
+.form-shell .back-link {
+  display: inline-block;
+  margin: 0 0 24px;
+}
+
+.form-intro {
+  margin: 0 auto 26px;
+  text-align: center;
+}
+
+.form-shell h1 {
+  margin: 0;
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+}
+
+.form-intro p {
+  margin: 10px 0 0;
+  color: var(--muted);
+}
+
+.form-page .large-form {
+  display: grid;
+  gap: 28px;
+  padding: clamp(20px, 4vw, 40px);
+  border: 1px solid rgba(18, 43, 44, 0.1);
+  border-radius: 22px;
+  background: #fff;
+  color: #182e30;
+  box-shadow: 0 24px 60px rgba(0, 12, 12, 0.24);
+}
+
+.form-section {
+  display: grid;
+  gap: 18px;
+  min-width: 0;
+  margin: 0;
+  padding: 8px 16px 16px;
+  border: 1px solid #d5dfdb;
+  border-radius: 10px;
+}
+
+.form-section legend {
+  padding: 0 8px;
+  color: #123c39;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.form-note {
+  margin: -4px 0 0;
+  color: #526767;
+  font-size: 0.88rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 18px 20px;
+  align-items: start;
+}
+
+.account-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.resident-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+.form-page .large-form label {
+  min-width: 0;
+  color: #31494a;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.form-page .large-form input,
+.form-page .large-form select {
+  min-width: 0;
+  min-height: 46px;
+  border: 1px solid #d5dfdb;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff;
+  color: #172f30;
+}
+
+.form-page .large-form input:focus,
+.form-page .large-form select:focus {
+  outline: 2px solid rgba(13, 103, 88, 0.2);
+  border-color: #187568;
+}
+
+.wide-field { grid-column: span 2; }
+
+.form-page .large-form .terms {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  color: #31494a;
+  font-weight: 600;
+}
+
+.form-page .large-form .terms input {
+  flex: 0 0 18px;
+  width: 18px;
+  min-height: 18px;
+  margin: 0;
+  accent-color: #0d6758;
+}
+
+.privacy-notice {
+  display: grid;
+  gap: 6px;
+  padding: 22px 20px;
+  border: 1px solid #d5dfdb;
+  border-radius: 8px;
+  color: #182e30;
+}
+
+.privacy-notice h2 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.privacy-notice p {
+  max-width: 620px;
+  margin: 0;
+  color: #526a8a;
+  line-height: 1.5;
+}
+
+.privacy-consent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: #182e30;
+  font-weight: 700;
+}
+
+.form-page .large-form .privacy-consent input {
+  flex: 0 0 13px;
+  width: 13px;
+  min-height: 13px;
+  margin: 0 0 0 4px;
+  accent-color: #0d6758;
+}
+
+.form-actions {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+
+.form-actions .button { min-width: 190px; }
+.form-page .large-form .form-message { color: #123c39; }
+
+.registration-shell { max-width: 1000px; }
+
+.registration-intro {
+  padding: 22px;
+  border-radius: 12px;
+  background: #12532f;
+  color: #fff;
+  text-align: left;
+}
+
+.registration-intro p { color: rgba(255, 255, 255, 0.8); }
+
+.registration-progress {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.registration-progress li {
+  padding: 10px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(237, 243, 241, 0.72);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.registration-progress li.active {
+  background: #18a34a;
+  color: #fff;
+}
+
+.registration-step[hidden] { display: none; }
+
+.registration-step legend {
+  color: #12532f;
+  font-family: inherit;
+}
+
+.registration-output {
+  display: block;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid #d5dfdb;
+  border-radius: 8px;
+  color: #526767;
+}
+
+.registration-form .address-heading {
+  margin: 8px 0 -4px;
+  color: #12532f;
+  font-size: 1rem;
+}
+
+.registration-form .same-address {
+  color: #31494a;
+  font-weight: 600;
+}
+
+.registration-form .same-address input {
+  width: 18px;
+  min-height: 18px;
+  accent-color: #0d6758;
+}
+
+.registration-review-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.35fr) minmax(0, 1fr);
+  gap: 10px 18px;
+  margin: 0;
+}
+
+.registration-review-grid dt {
+  color: #526767;
+  font-weight: 700;
+}
+
+.registration-review-grid dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-actions .button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
 
 @media (max-width: 960px) {
   .public-header {
@@ -551,6 +815,17 @@ button, input, select, textarea { font: inherit; }
   .login-layout {
     grid-template-columns: 1fr;
   }
+}
+
+@media (max-width: 850px) {
+  .registration-progress { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .form-page .account-grid,
+  .form-page .resident-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wide-field { grid-column: auto; }
 }
 
 @media (max-width: 640px) {
@@ -585,4 +860,13 @@ button, input, select, textarea { font: inherit; }
     flex-direction: column;
     align-items: flex-start;
   }
+
+  .form-page { padding: 20px 14px 28px; }
+  .form-shell .back-link { margin-bottom: 18px; }
+  .form-page .account-grid,
+  .form-page .resident-grid { grid-template-columns: 1fr; }
+  .form-page .large-form { gap: 24px; }
+  .form-section { gap: 14px; }
+  .registration-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .registration-review-grid { grid-template-columns: 1fr; gap: 4px; }
 }

@@ -26,9 +26,15 @@ async function addNotification(connection, residentId, requestId, title, message
 }
 
 router.get("/types", requireResident, async (req, res) => {
-  res.json({
-    services: Object.entries(SERVICE_FEES).map(([name, fee]) => ({ name, fee }))
-  });
+  try {
+    const [services] = await pool.execute(
+      "SELECT name, fee FROM service_types ORDER BY service_type_id"
+    );
+    res.json({ services });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Unable to load service types." });
+  }
 });
 
 router.post("/", requireResident, async (req, res) => {
@@ -41,7 +47,20 @@ router.post("/", requireResident, async (req, res) => {
   }
 
   const numberOfCopies = Math.max(1, Math.min(10, Number(copies) || 1));
-  const fee = SERVICE_FEES[serviceType] * numberOfCopies;
+  let fee;
+  let serviceTypeId;
+  try {
+    const [typeRows] = await pool.execute(
+      "SELECT service_type_id, fee FROM service_types WHERE name = ?",
+      [serviceType]
+    );
+    if (!typeRows.length) return res.status(400).json({ message: "Please select a valid service." });
+    serviceTypeId = typeRows[0].service_type_id;
+    fee = Number(typeRows[0].fee) * numberOfCopies;
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Unable to load service pricing." });
+  }
   const method = paymentMethod === "Online Payment" ? "Online Payment" : "Pay at Barangay Hall";
   const paymentStatus = fee === 0 ? "Not Required" : "Unpaid";
 
@@ -51,9 +70,9 @@ router.post("/", requireResident, async (req, res) => {
 
     const [result] = await connection.execute(
       `INSERT INTO service_requests
-       (tracking_number, resident_id, service_type, purpose, copies, fee, payment_method, payment_status)
+       (tracking_number, resident_id, service_type_id, purpose, copies, fee, payment_method, payment_status)
        VALUES ('TEMP', ?, ?, ?, ?, ?, ?, ?)`,
-      [residentId, serviceType, String(purpose).trim(), numberOfCopies, fee, method, paymentStatus]
+      [residentId, serviceTypeId, String(purpose).trim(), numberOfCopies, fee, method, paymentStatus]
     );
 
     const trackingNumber = makeTrackingNumber(result.insertId);
@@ -90,11 +109,12 @@ router.post("/", requireResident, async (req, res) => {
 router.get("/mine", requireResident, async (req, res) => {
   try {
     const [rows] = await pool.execute(
-      `SELECT request_id, tracking_number, service_type, purpose, copies, fee,
+      `SELECT sr.request_id, sr.tracking_number, st.name AS service_type, sr.purpose, sr.copies, sr.fee,
               payment_method, payment_status, status, remarks, submitted_at, updated_at, completed_at
-       FROM service_requests
-       WHERE resident_id = ?
-       ORDER BY submitted_at DESC`,
+       FROM service_requests sr
+       JOIN service_types st ON st.service_type_id = sr.service_type_id
+       WHERE sr.resident_id = ?
+       ORDER BY sr.submitted_at DESC`,
       [req.session.residentUser.residentId]
     );
     res.json({ requests: rows });
@@ -107,9 +127,11 @@ router.get("/mine", requireResident, async (req, res) => {
 router.get("/mine/:trackingNumber", requireResident, async (req, res) => {
   try {
     const [rows] = await pool.execute(
-      `SELECT sr.*, CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name
+      `SELECT sr.*, st.name AS service_type,
+              CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name
        FROM service_requests sr
        JOIN resident_profiles rp ON rp.resident_id = sr.resident_id
+       JOIN service_types st ON st.service_type_id = sr.service_type_id
        WHERE sr.tracking_number = ? AND sr.resident_id = ?`,
       [req.params.trackingNumber, req.session.residentUser.residentId]
     );
@@ -155,14 +177,15 @@ router.patch("/notifications/:id/read", requireResident, async (req, res) => {
 router.get("/admin", requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.execute(
-      `SELECT sr.request_id, sr.tracking_number, sr.service_type, sr.purpose, sr.copies,
+      `SELECT sr.request_id, sr.tracking_number, st.name AS service_type, sr.purpose, sr.copies,
               sr.fee, sr.payment_method, sr.payment_status, sr.status, sr.remarks,
               sr.submitted_at, sr.updated_at,
               CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
               rp.contact_number, rp.address, rp.purok,
-              au.full_name AS processed_by_name
+              CONCAT_WS(' ', au.first_name, au.last_name) AS processed_by_name
        FROM service_requests sr
        JOIN resident_profiles rp ON rp.resident_id = sr.resident_id
+       JOIN service_types st ON st.service_type_id = sr.service_type_id
        LEFT JOIN admin_users au ON au.admin_id = sr.processed_by
        ORDER BY sr.submitted_at DESC`
     );
@@ -176,18 +199,20 @@ router.get("/admin", requireAdmin, async (req, res) => {
 router.get("/admin/:id", requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.execute(
-      `SELECT sr.*, CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
-              rp.contact_number, rp.address, rp.purok, ru.username
+      `SELECT sr.*, st.name AS service_type,
+              CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
+              rp.contact_number, rp.address, rp.purok
        FROM service_requests sr
        JOIN resident_profiles rp ON rp.resident_id = sr.resident_id
-       LEFT JOIN resident_users ru ON ru.resident_user_id = rp.resident_user_id
+       JOIN service_types st ON st.service_type_id = sr.service_type_id
        WHERE sr.request_id = ?`,
       [req.params.id]
     );
     if (!rows.length) return res.status(404).json({ message: "Request not found." });
 
     const [history] = await pool.execute(
-      `SELECT rsh.status, rsh.remarks, rsh.changed_at, au.full_name AS changed_by_name
+      `SELECT rsh.status, rsh.remarks, rsh.changed_at,
+              CONCAT_WS(' ', au.first_name, au.last_name) AS changed_by_name
        FROM request_status_history rsh
        LEFT JOIN admin_users au ON au.admin_id = rsh.changed_by
        WHERE rsh.request_id = ? ORDER BY rsh.changed_at ASC`,
@@ -212,7 +237,10 @@ router.patch("/admin/:id/status", requireAdmin, async (req, res) => {
   try {
     await connection.beginTransaction();
     const [requests] = await connection.execute(
-      "SELECT resident_id, tracking_number, service_type FROM service_requests WHERE request_id = ? FOR UPDATE",
+      `SELECT sr.resident_id, sr.tracking_number, st.name AS service_type
+       FROM service_requests sr
+       JOIN service_types st ON st.service_type_id = sr.service_type_id
+       WHERE sr.request_id = ? FOR UPDATE`,
       [req.params.id]
     );
     if (!requests.length) {

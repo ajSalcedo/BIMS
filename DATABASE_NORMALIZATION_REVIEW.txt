@@ -1,0 +1,54 @@
+BIMS Database Design Review and Changes
+========================================
+
+Reviewed against:
+- Proper normalization
+- Appropriate use of 1NF, 2NF, and 3NF
+- Primary keys on tables
+- Foreign keys and relationships
+- Consistency and avoidance of unnecessary redundancy
+
+Findings
+--------
+1. Resident account contact data was stored in both resident_users and
+   resident_profiles and kept synchronized by triggers. This was duplicated
+   data and could become inconsistent.
+
+2. Admin names were stored as both first_name/last_name and a separate
+   full_name value. Full name is derived, so storing it as a separate value
+   created a 3NF-style redundancy risk.
+
+3. Service request fees were fixed in application code and stored only as
+   repeated values in request rows. A service_types lookup table centralizes
+   the current standard fee while service_requests keeps a fee snapshot.
+
+4. Status history tables for requests and concerns separate historical states
+   from the current status. This avoids repeated status history in the main
+   entity tables and supports referential consistency.
+
+Changes
+-------
+- Removed resident_users.contact_number and the contact synchronization triggers.
+- Resident email login remains in resident_users. Contact login uses the
+  canonical resident_profiles.contact_number value.
+- Removed resident_users contact duplication from application queries.
+- Removed admin_users.full_name. Application code derives display names from
+  first_name and last_name with CONCAT_WS.
+- Added database/service_types lookup rows for the five supported service types.
+- Centralized the resident registration duplicate check to profile contact
+  data instead of the removed account mirror.
+
+How to apply
+------------
+For a fresh database:
+1. SOURCE database/bims.sql;
+2. SOURCE database/subsystem2.sql;
+3. SOURCE database/subsystem3.sql;
+
+For an existing database:
+SOURCE database/normalization_migration.sql;
+The migration is repeatable and safely handles installations where earlier
+normalization steps have already been applied.
+
+After running the migration, restart the Node.js server. No application
+secret, password, or environment value is stored in this text file.

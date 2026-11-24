@@ -72,7 +72,8 @@ router.get("/mine/:trackingNumber", requireResident, async (req, res) => {
     );
     if (!rows.length) return res.status(404).json({ message: "Concern not found." });
     const [history] = await pool.execute(
-      `SELECT csh.status, csh.remarks, csh.changed_at, au.full_name AS changed_by_name
+      `      SELECT csh.status, csh.remarks, csh.changed_at,
+             CONCAT_WS(' ', au.first_name, au.last_name) AS changed_by_name
        FROM concern_status_history csh LEFT JOIN admin_users au ON au.admin_id = csh.changed_by
        WHERE csh.concern_id = ? ORDER BY csh.changed_at ASC`, [rows[0].concern_id]
     );
@@ -99,7 +100,8 @@ router.get("/admin", requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.execute(
       `SELECT cc.*, CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
-              rp.contact_number, rp.address, rp.purok, au.full_name AS assigned_to_name
+              rp.contact_number, rp.address, rp.purok,
+              CONCAT_WS(' ', au.first_name, au.last_name) AS assigned_to_name
        FROM community_concerns cc JOIN resident_profiles rp ON rp.resident_id = cc.resident_id
        LEFT JOIN admin_users au ON au.admin_id = cc.assigned_to ORDER BY cc.submitted_at DESC`
     );
@@ -111,14 +113,15 @@ router.get("/admin/:id", requireAdmin, async (req, res) => {
   try {
     const [rows] = await pool.execute(
       `SELECT cc.*, CONCAT(rp.first_name, ' ', COALESCE(CONCAT(rp.middle_name, ' '), ''), rp.last_name) AS resident_name,
-              rp.contact_number, rp.address, rp.purok, ru.username, au.full_name AS assigned_to_name
+              rp.contact_number, rp.address, rp.purok,
+              CONCAT_WS(' ', au.first_name, au.last_name) AS assigned_to_name
        FROM community_concerns cc JOIN resident_profiles rp ON rp.resident_id = cc.resident_id
-       LEFT JOIN resident_users ru ON ru.resident_user_id = rp.resident_user_id
        LEFT JOIN admin_users au ON au.admin_id = cc.assigned_to WHERE cc.concern_id = ?`, [req.params.id]
     );
     if (!rows.length) return res.status(404).json({ message: "Concern not found." });
     const [history] = await pool.execute(
-      `SELECT csh.status, csh.remarks, csh.changed_at, au.full_name AS changed_by_name
+      `      SELECT csh.status, csh.remarks, csh.changed_at,
+             CONCAT_WS(' ', au.first_name, au.last_name) AS changed_by_name
        FROM concern_status_history csh LEFT JOIN admin_users au ON au.admin_id = csh.changed_by
        WHERE csh.concern_id = ? ORDER BY csh.changed_at ASC`, [req.params.id]
     );
@@ -128,7 +131,11 @@ router.get("/admin/:id", requireAdmin, async (req, res) => {
 
 router.get("/admin/meta", requireAdmin, async (req, res) => {
   try {
-    const [admins] = await pool.execute(`SELECT admin_id, full_name, role FROM admin_users WHERE account_status = 'Active' ORDER BY full_name`);
+    const [admins] = await pool.execute(
+      `SELECT admin_id, CONCAT_WS(' ', first_name, last_name) AS full_name, role
+       FROM admin_users WHERE account_status = 'Active'
+       ORDER BY last_name, first_name`
+    );
     res.json({ admins });
   } catch (error) { console.error(error); res.status(500).json({ message: "Unable to load personnel." }); }
 });
@@ -156,7 +163,11 @@ router.patch("/admin/:id", requireAdmin, async (req, res) => {
     );
     let assignmentText = "";
     if (assigned !== null) {
-      const [personnel] = await connection.execute(`SELECT full_name FROM admin_users WHERE admin_id = ? AND account_status = 'Active'`, [assigned]);
+      const [personnel] = await connection.execute(
+        `SELECT CONCAT_WS(' ', first_name, last_name) AS full_name
+         FROM admin_users WHERE admin_id = ? AND account_status = 'Active'`,
+        [assigned]
+      );
       if (!personnel.length) { await connection.rollback(); return res.status(400).json({ message: "Assigned personnel not found or inactive." }); }
       assignmentText = ` Assigned to ${personnel[0].full_name}.`;
     }

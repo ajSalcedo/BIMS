@@ -329,22 +329,57 @@ button, input, select, textarea { font: inherit; }
 
 .status-key,
 .instructions {
-  background: rgba(8, 45, 44, 0.04);
-  border: 1px solid rgba(18, 43, 44, 0.08);
-  border-radius: 12px;
-  padding: 18px 16px;
+  background: #f8fbf9;
+  border: 1px solid rgba(18, 43, 44, 0.12);
+  border-radius: 14px;
+  padding: 22px 20px;
 }
 
-.status-key b,
+.instructions {
+  align-self: start;
+  color: #173536;
+}
+
 .instructions h2 {
-  color: #112d2d;
+  margin-bottom: 16px;
+  color: #123c39;
+}
+
+.instructions ol {
+  margin: 0;
+  padding-left: 24px;
+  display: grid;
+  gap: 14px;
+  color: #294647;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+
+.instructions li {
+  padding-left: 4px;
+}
+
+.instructions li::marker {
+  color: #a87d0a;
+  font-weight: 800;
+}
+
+.status-key {
+  margin-top: 22px;
+  background: #eaf2ee;
+  border-color: rgba(18, 43, 44, 0.1);
+}
+
+.status-key b {
+  color: #123c39;
 }
 
 .status-key span {
   display: block;
-  margin-top: 8px;
-  color: rgba(17, 45, 45, 0.8);
+  margin-top: 10px;
+  color: #24504b;
   font-weight: 700;
+  line-height: 1.5;
 }
 
 .request-item {

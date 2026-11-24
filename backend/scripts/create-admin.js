@@ -31,11 +31,14 @@ function ask(question) {
     }
 
     const hash = await bcrypt.hash(password, 12);
+    const nameParts = fullName.trim().split(/\s+/);
+    const firstName = nameParts.shift() || "";
+    const lastName = nameParts.join(" ") || firstName;
 
     await pool.execute(
-      `INSERT INTO admin_users (username, full_name, email, password_hash, role)
-       VALUES (?, ?, ?, ?, ?)`,
-      [username, fullName, email || null, hash, role]
+      `INSERT INTO admin_users (username, first_name, last_name, email, password_hash, role)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [username, firstName, lastName, email || null, hash, role]
     );
 
     console.log("\nAdmin account created successfully.");

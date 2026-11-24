@@ -17,11 +17,12 @@ router.get("/public", async (req, res) => {
     let latestRequest = null;
     if (req.session.residentUser?.residentId) {
       const [requests] = await pool.execute(
-        `SELECT tracking_number, service_type, status, payment_status,
-                submitted_at, updated_at
-         FROM service_requests
-         WHERE resident_id = ?
-         ORDER BY submitted_at DESC, request_id DESC
+        `SELECT sr.tracking_number, st.name AS service_type, sr.status, sr.payment_status,
+                sr.submitted_at, sr.updated_at
+         FROM service_requests sr
+         JOIN service_types st ON st.service_type_id = sr.service_type_id
+         WHERE sr.resident_id = ?
+         ORDER BY sr.submitted_at DESC, sr.request_id DESC
          LIMIT 1`,
         [req.session.residentUser.residentId]
       );

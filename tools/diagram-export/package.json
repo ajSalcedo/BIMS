@@ -1,0 +1,14 @@
+{
+  "name": "bims-diagram-export",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "export": "node export-diagrams.js"
+  },
+  "devDependencies": {
+    "@mermaid-js/mermaid-cli": "11.17.1"
+  },
+  "dependencies": {
+    "bims": "file:../.."
+  }
+}
