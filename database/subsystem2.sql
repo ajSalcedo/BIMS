@@ -1,10 +1,24 @@
 USE bims;
 
+CREATE TABLE IF NOT EXISTS service_types (
+    service_type_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    fee DECIMAL(10,2) NOT NULL DEFAULT 0.00
+) ENGINE=InnoDB;
+
+INSERT INTO service_types (name, fee) VALUES
+    ('Certificate of Residency', 50.00),
+    ('Barangay Clearance', 100.00),
+    ('Certificate of Indigency', 0.00),
+    ('Barangay Certificate', 50.00),
+    ('Other', 0.00)
+ON DUPLICATE KEY UPDATE fee = VALUES(fee);
+
 CREATE TABLE IF NOT EXISTS service_requests (
     request_id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     tracking_number VARCHAR(30) NOT NULL UNIQUE,
     resident_id INT UNSIGNED NOT NULL,
-    service_type ENUM('Certificate of Residency','Barangay Clearance','Certificate of Indigency','Barangay Certificate','Other') NOT NULL,
+    service_type_id INT UNSIGNED NOT NULL,
     purpose VARCHAR(255) NOT NULL,
     copies INT UNSIGNED NOT NULL DEFAULT 1,
     fee DECIMAL(10,2) NOT NULL DEFAULT 0.00,
@@ -17,6 +31,7 @@ CREATE TABLE IF NOT EXISTS service_requests (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     completed_at DATETIME NULL,
     CONSTRAINT fk_request_resident FOREIGN KEY (resident_id) REFERENCES resident_profiles(resident_id) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_request_service_type FOREIGN KEY (service_type_id) REFERENCES service_types(service_type_id) ON UPDATE CASCADE,
     CONSTRAINT fk_request_admin FOREIGN KEY (processed_by) REFERENCES admin_users(admin_id) ON DELETE SET NULL ON UPDATE CASCADE,
     INDEX idx_request_resident (resident_id),
     INDEX idx_request_status (status),

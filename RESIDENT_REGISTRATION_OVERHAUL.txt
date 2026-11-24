@@ -1,0 +1,75 @@
+BIMS RESIDENT REGISTRATION OVERHAUL
+==================================
+
+Summary
+-------
+Resident registration is now a six-step wizard covering Personal, Contact,
+Address, Household, Account, and Review. The registration API validates the
+same required fields as the browser and creates the user, profile, and
+proof-of-residency record in one database transaction.
+
+Registration fields and storage
+-------------------------------
+Personal:
+- First name, last name, date of birth, and citizenship are required.
+- Middle name, suffix, sex, and civil status are optional.
+- Age is calculated from date of birth for display and is not stored.
+
+Contact:
+- A Philippine mobile number is required and unique. It is the resident
+  username and is stored in resident_profiles.contact_number.
+- Email address and preferred notification method (SMS, Email, or Both) are
+  optional.
+
+Address:
+- Permanent region, province, city/municipality, barangay, and purok/sitio/zone
+  are required. Street, house number, and ZIP code are optional.
+- Present address supports the same fields and may be marked as the permanent
+  address.
+- Years of residency, landmark, and previous address are optional.
+- The legacy address and purok columns continue to contain a formatted
+  permanent address for existing resident/service/admin screens.
+
+Household:
+- Household reference number, reported household size, and occupation are
+  optional. Relationship to household head is required.
+- A supplied household reference must match a household already in BIMS; a
+  matching household_id is linked to the profile.
+- Household size is self-reported and stored on the resident profile.
+
+Account and review:
+- Proof-of-residency type and file are required. Accepted files are JPG, PNG,
+  and PDF, up to 5 MB.
+- The file bytes and metadata are stored in resident_proof_documents, linked
+  one-to-one with the resident profile. The table is not served as public
+  static content. Download endpoints require the resident's own session or an
+  admin session.
+- Passwords must be at least 10 characters and contain a letter and a number.
+- The resident must accept the terms and privacy notice. The consent time is
+  stored in resident_profiles.privacy_consent_at.
+- Passwords continue to be stored as bcrypt hashes.
+
+Database changes
+----------------
+- resident_profiles.citizenship replaces nationality.
+- resident_profiles.contact_number has a unique index and is the resident's
+  canonical mobile username.
+- Optional demographic fields sex and civil_status may be NULL.
+- Address components, contact preference, household reference/size, privacy
+  consent timestamp, and present/previous address details are stored on the
+  resident profile.
+- resident_proof_documents stores the uploaded proof file as a LONGBLOB and
+  cascades deletion with its resident profile.
+- The resident profile keeps its existing relationship to resident_users,
+  households, service requests, concerns, and notifications.
+
+Existing databases
+------------------
+1. Apply database/normalization_migration.sql if it has not already been run.
+2. Check for duplicate resident contact numbers using the query at the top of
+   database/resident_registration_overhaul_migration.sql and resolve any
+   duplicates.
+3. Run database/resident_registration_overhaul_migration.sql once.
+
+Fresh databases get the updated schema from database/bims.sql. See
+docs/BIMS_DATABASE_DIAGRAMS.md for the updated ERDs and data-flow diagrams.

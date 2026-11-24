@@ -16,25 +16,38 @@ async function loadProfile() {
     ["Resident ID", p.resident_id],
     ["Full Name", fullName(p)],
     ["Birth Date", p.birth_date],
+    ["Citizenship", p.citizenship],
     ["Sex", p.sex],
     ["Civil Status", p.civil_status],
-    ["Place of Birth", p.place_of_birth],
-    ["Nationality", p.nationality],
-    ["Religion", p.religion],
-    ["Address", p.address],
-    ["Purok", p.purok],
+    ["Permanent Address", p.address],
+    ["Region", p.permanent_region],
+    ["Province", p.permanent_province],
+    ["City / Municipality", p.permanent_city_municipality],
+    ["Barangay", p.permanent_barangay],
+    ["Purok / Sitio / Zone", p.permanent_purok || p.purok],
+    ["Street", p.permanent_street],
+    ["House Number", p.permanent_house_number],
+    ["ZIP Code", p.permanent_zip_code],
+    ["Present Address", p.present_address_same_as_permanent ? "Same as permanent address" : formatPresentAddress(p)],
+    ["Years of Residency", p.years_of_residency],
+    ["Landmark", p.landmark],
+    ["Previous Address", p.previous_address],
     ["Contact Number", p.contact_number],
-    ["Employment Status", p.employment_status],
+    ["Email", p.email],
+    ["Preferred Notification", p.preferred_notification],
+    ["Household Reference", p.household_reference_number || p.household_number],
+    ["Household Size", p.reported_household_size],
+    ["Relationship to Household Head", p.relationship_to_head],
     ["Occupation", p.occupation],
-    ["Educational Attainment", p.educational_attainment],
-    ["Voter Status", p.voter_status]
+    ["Proof of Residency", p.proof_document_type]
   ];
 
   document.getElementById("profileDetails").innerHTML = `<div class="info-grid">${
     fields.map(([label, value]) =>
-      `<div class="info-item"><small>${label}</small>${escapeHtml(value || "-")}</div>`
+      `<div class="info-item"><small>${label}</small>${escapeHtml(value === null || value === undefined || value === "" ? "-" : value)}</div>`
     ).join("")
-  }</div>`;
+  }${p.proof_document_type ? `<div class="info-item"><small>Proof document</small><a href="/api/resident-auth/me/proof-of-residency">Download proof of residency</a></div>` : ""}
+  </div>`;
 
   if (!household) {
     document.getElementById("householdDetails").innerHTML =
@@ -57,6 +70,12 @@ async function loadProfile() {
 
 function fullName(p) {
   return [p.first_name, p.middle_name, p.last_name, p.suffix].filter(Boolean).join(" ");
+}
+function formatPresentAddress(p) {
+  return [
+    p.present_house_number, p.present_street, p.present_purok, p.present_barangay,
+    p.present_city_municipality, p.present_province, p.present_zip_code, p.present_region
+  ].filter(Boolean).join(", ");
 }
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));

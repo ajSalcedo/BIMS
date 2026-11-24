@@ -693,6 +693,104 @@ button, input, select, textarea { font: inherit; }
 .form-actions .button { min-width: 190px; }
 .form-page .large-form .form-message { color: #123c39; }
 
+.registration-shell { max-width: 1000px; }
+
+.registration-intro {
+  padding: 22px;
+  border-radius: 12px;
+  background: #12532f;
+  color: #fff;
+  text-align: left;
+}
+
+.registration-intro p { color: rgba(255, 255, 255, 0.8); }
+
+.registration-progress {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.registration-progress li {
+  padding: 10px 6px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(237, 243, 241, 0.72);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.registration-progress li.active {
+  background: #18a34a;
+  color: #fff;
+}
+
+.registration-step[hidden] { display: none; }
+
+.registration-step legend {
+  color: #12532f;
+  font-family: inherit;
+}
+
+.registration-output {
+  display: block;
+  min-height: 46px;
+  padding: 12px;
+  border: 1px solid #d5dfdb;
+  border-radius: 8px;
+  color: #526767;
+}
+
+.registration-form .address-heading {
+  margin: 8px 0 -4px;
+  color: #12532f;
+  font-size: 1rem;
+}
+
+.registration-form .same-address {
+  color: #31494a;
+  font-weight: 600;
+}
+
+.registration-form .same-address input {
+  width: 18px;
+  min-height: 18px;
+  accent-color: #0d6758;
+}
+
+.registration-review-grid {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.35fr) minmax(0, 1fr);
+  gap: 10px 18px;
+  margin: 0;
+}
+
+.registration-review-grid dt {
+  color: #526767;
+  font-weight: 700;
+}
+
+.registration-review-grid dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.step-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.step-actions .button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
 @media (max-width: 960px) {
   .public-header {
     flex-direction: column;
@@ -720,6 +818,8 @@ button, input, select, textarea { font: inherit; }
 }
 
 @media (max-width: 850px) {
+  .registration-progress { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
   .form-page .account-grid,
   .form-page .resident-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -767,4 +867,6 @@ button, input, select, textarea { font: inherit; }
   .form-page .resident-grid { grid-template-columns: 1fr; }
   .form-page .large-form { gap: 24px; }
   .form-section { gap: 14px; }
+  .registration-progress { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .registration-review-grid { grid-template-columns: 1fr; gap: 4px; }
 }

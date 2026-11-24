@@ -43,10 +43,28 @@ async function loadResident(id) {
       ${info("Birth Date", p.birth_date)}
       ${info("Sex", p.sex)}
       ${info("Civil Status", p.civil_status)}
+      ${info("Citizenship", p.citizenship)}
       ${info("Address", p.address)}
-      ${info("Purok", p.purok)}
+      ${info("Region", p.permanent_region)}
+      ${info("Province", p.permanent_province)}
+      ${info("City / Municipality", p.permanent_city_municipality)}
+      ${info("Barangay", p.permanent_barangay)}
+      ${info("Purok / Sitio / Zone", p.permanent_purok || p.purok)}
+      ${info("Street", p.permanent_street)}
+      ${info("House Number", p.permanent_house_number)}
+      ${info("ZIP Code", p.permanent_zip_code)}
+      ${info("Present Address", p.present_address_same_as_permanent ? "Same as permanent address" : formatPresentAddress(p))}
       ${info("Contact", p.contact_number)}
-      ${info("Employment", p.employment_status)}
+      ${info("Email", p.email)}
+      ${info("Preferred Notification", p.preferred_notification)}
+      ${info("Years of Residency", p.years_of_residency)}
+      ${info("Landmark", p.landmark)}
+      ${info("Previous Address", p.previous_address)}
+      ${info("Household Reference", p.household_reference_number || p.household_number)}
+      ${info("Reported Household Size", p.reported_household_size)}
+      ${info("Relationship to Household Head", p.relationship_to_head)}
+      ${info("Proof of Residency", p.proof_document_type)}
+      ${p.proof_document_type ? `<div class="info-item"><small>Proof document</small><a href="/api/residents/${p.resident_id}/proof-of-residency">Download proof of residency</a></div>` : ""}
       ${info("Occupation", p.occupation)}
       ${info("Voter Status", p.voter_status)}
       ${info("Status", p.status)}
@@ -86,9 +104,23 @@ async function showEditForm(id) {
       ${editInput("last_name", "Last Name", p.last_name)}
       ${editInput("suffix", "Suffix", p.suffix)}
       ${editInput("birth_date", "Birth Date", p.birth_date, "date")}
-      ${editInput("address", "Address", p.address)}
-      ${editInput("purok", "Purok", p.purok)}
+      ${editInput("citizenship", "Citizenship", p.citizenship)}
+      ${editInput("permanent_region", "Region", p.permanent_region)}
+      ${editInput("permanent_province", "Province", p.permanent_province)}
+      ${editInput("permanent_city_municipality", "City / Municipality", p.permanent_city_municipality)}
+      ${editInput("permanent_barangay", "Barangay", p.permanent_barangay)}
+      ${editInput("permanent_purok", "Purok / Sitio / Zone", p.permanent_purok || p.purok)}
+      ${editInput("permanent_street", "Street", p.permanent_street)}
+      ${editInput("permanent_house_number", "House Number", p.permanent_house_number)}
+      ${editInput("permanent_zip_code", "ZIP Code", p.permanent_zip_code)}
       ${editInput("contact_number", "Contact Number", p.contact_number)}
+      ${editInput("preferred_notification", "Preferred Notification", p.preferred_notification)}
+      ${editInput("years_of_residency", "Years of Residency", p.years_of_residency, "number")}
+      ${editInput("landmark", "Landmark", p.landmark)}
+      ${editInput("previous_address", "Previous Address", p.previous_address)}
+      ${editInput("household_reference_number", "Household Reference Number", p.household_reference_number)}
+      ${editInput("reported_household_size", "Household Size", p.reported_household_size, "number")}
+      ${editInput("relationship_to_head", "Relationship to Household Head", p.relationship_to_head)}
       ${editInput("occupation", "Occupation", p.occupation)}
       ${editInput("employment_status", "Employment Status", p.employment_status)}
       ${editInput("educational_attainment", "Educational Attainment", p.educational_attainment)}
@@ -126,6 +158,12 @@ function info(label, value) {
 }
 function fullName(p) {
   return [p.first_name, p.middle_name, p.last_name, p.suffix].filter(Boolean).join(" ");
+}
+function formatPresentAddress(p) {
+  return [
+    p.present_house_number, p.present_street, p.present_purok, p.present_barangay,
+    p.present_city_municipality, p.present_province, p.present_zip_code, p.present_region
+  ].filter(Boolean).join(", ");
 }
 function escapeHtml(value) {
   return String(value).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
