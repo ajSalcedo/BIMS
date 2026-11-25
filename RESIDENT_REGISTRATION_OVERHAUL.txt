@@ -31,11 +31,14 @@ Address:
   permanent address for existing resident/service/admin screens.
 
 Household:
-- Household reference number, reported household size, and occupation are
-  optional. Relationship to household head is required.
-- A supplied household reference must match a household already in BIMS; a
-  matching household_id is linked to the profile.
+- Residents choose to create a new household or join one. Creating a household
+  stores its permanent address and purok, generates a household reference
+  number, links the resident, and sets them as household head.
+- Joining requires an existing household reference number and a relationship
+  to its head.
 - Household size is self-reported and stored on the resident profile.
+- Newly created household reference numbers are shown after registration so
+  other residents can use them to join the same household.
 
 Account and review:
 - Proof-of-residency type and file are required. Accepted files are JPG, PNG,

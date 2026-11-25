@@ -35,9 +35,16 @@
         </div>
 
         <div id="requestList" class="request-list">Loading...</div>
-        <div id="requestDetail" class="request-detail"></div>
       </section>
     </main>
+
+    <dialog id="requestDetail" class="request-detail-dialog" aria-labelledby="requestDetailTitle">
+      <div class="request-detail-heading">
+        <h2 id="requestDetailTitle">Request details</h2>
+        <button id="closeRequestDetail" class="request-detail-close" type="button" aria-label="Close request details">×</button>
+      </div>
+      <div id="requestDetailContent" aria-live="polite"></div>
+    </dialog>
 
     <script src="/js/resident-requests.js"></script>
     <script src="/js/resident-auth.js"></script>

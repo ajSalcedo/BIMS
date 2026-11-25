@@ -3,100 +3,167 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Barangay Portal</title>
+  <title>Your Barangay Services, Made Easier | BIMS</title>
+  <script>document.documentElement.classList.add("js");</script>
   <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/landing.css">
 </head>
-<body class="public-page">
-  <header class="public-header">
-    <div class="brand-wrap">
-      <div class="brand-badge">B</div>
-      <span class="brand-name">[Barangay Name]</span>
-    </div>
+<body class="landing" id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="#">Home</a>
-      <a href="#">About</a>
-      <a href="#">Services</a>
-      <a href="#">Officials</a>
-      <a href="#">Announcements</a>
-      <a href="#">Barangay Map</a>
-      <a href="#">Contact</a>
-      <a href="/resident/regisForm.html">Register</a>
-      <a class="nav-login" id="accountLink" href="/resident/login.html">Log in</a>
-    </nav>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="#top">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span class="brand-text">Barangay Portal</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+        <a href="#top">Home</a>
+        <a href="#services">Services</a>
+        <a href="#how">How it works</a>
+        <a href="#faq">Help</a>
+        <a class="btn btn-outline btn-sm" href="/resident/regisForm.html">Register</a>
+        <a class="btn btn-primary btn-sm" id="accountLink" href="/resident/login.html">Log in</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="public-hero">
-    <section class="hero-copy-panel">
-      <h1>
-        Your Barangay<br>
-        Services, Made<br>
-        Easier.
-      </h1>
+  <main id="main">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></symbol>
+      <symbol id="i-user" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0 1 6-6h2a6 6 0 0 1 6 6v1M19 8v6M16 11h6"/></symbol>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"/></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></symbol>
+      <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="2"/><path d="M11 18h2"/></symbol>
+    </svg>
 
-      <p>
-        Register once, request barangay documents online, and follow every
-        step from submission to pickup, without repeated trips to the barangay hall.
-      </p>
+    <section class="hero2">
+      <div class="container hero-grid">
+        <div>
+          <h1 class="rise" style="--i:0">Your Barangay<br>Services, Made Easier.</h1>
+          <p class="lead rise" style="--i:1">Register once, request barangay documents online, and follow every step from submission to pickup, without repeated trips to the barangay hall.</p>
+          <div class="actions rise" style="--i:2">
+            <a class="btn btn-primary" id="primaryAction" href="/resident/regisForm.html">Register Now</a>
+            <a class="btn btn-outline" href="#services">Explore Services</a>
+          </div>
+          <ul class="hero-links rise" style="--i:3">
+            <li><a href="/resident/request.html"><svg class="ico"><use href="#i-file"/></svg>Request a document</a></li>
+            <li><a href="/resident/regisForm.html"><svg class="ico"><use href="#i-user"/></svg>Resident registration</a></li>
+            <li><a href="#faq"><svg class="ico"><use href="#i-search"/></svg>Get help</a></li>
+          </ul>
+        </div>
 
-      <div class="cta-row">
-        <a href="/resident/regisForm.html" id="primaryAction" class="primary-btn">Register Now</a>
-        <a href="/resident/request.html" class="secondary-btn">Explore Services</a>
-      </div>
-
-      <div class="quick-links" aria-label="Quick service links">
-        <span>📄 Request a document</span>
-        <span>🧾 Resident registration</span>
-        <span>📍 Contact the office</span>
+        <aside class="tracker rise" style="--i:4" aria-label="Latest resident request" aria-live="polite">
+          <div class="tracker-top">
+            <span class="chip" id="requestTag">Sample request</span>
+            <span class="tracker-no" id="requestCode">DOC-2026-K7M39QXA</span>
+          </div>
+          <h3 id="requestService">Certificate of Residency</h3>
+          <p class="tracker-sub" id="requestUpdated">Updated a few minutes ago</p>
+          <div class="track" id="requestProgress">
+            <div class="track-line"><span class="track-fill"></span></div>
+            <ol class="track-steps" id="requestProgressLabels">
+              <li><span class="dot"></span><span>Pending</span></li>
+              <li class="on" style="--s:1"><span class="dot"></span><span>Processing</span></li>
+              <li class="now" style="--s:2"><span class="dot"></span><span>Ready</span></li>
+              <li style="--s:3"><span class="dot"></span><span>Done</span></li>
+            </ol>
+          </div>
+          <dl class="tracker-meta">
+            <div><dt>Document status</dt><dd id="requestStatus">Ready for pickup</dd></div>
+            <div><dt>Payment status</dt><dd id="requestPayment">Verified by staff</dd></div>
+          </dl>
+        </aside>
       </div>
     </section>
 
-    <section class="hero-card" aria-label="Latest resident request" aria-live="polite">
-      <div class="card-tag" id="requestTag">Sample request</div>
-      <div class="card-header">
-        <span class="request-label" id="requestService">Certificate of Residency</span>
-        <span class="request-code" id="requestCode">DOC-2026-K7M39QXA</span>
+    <section class="stats container reveal" aria-label="Barangay system statistics">
+      <div class="stats-grid">
+        <div class="stat-card"><strong id="verifiedResidents" aria-live="polite">Loading...</strong><span>Verified residents</span></div>
+        <div class="stat-card"><strong id="completedRequests" aria-live="polite">Loading...</strong><span>Requests completed</span></div>
       </div>
+    </section>
 
-      <p class="card-subtitle" id="requestUpdated">Updated a few minutes ago</p>
-
-      <div class="progress-rail" id="requestProgress" aria-label="Request progress">
-        <span class="step active"></span>
-        <span class="step active"></span>
-        <span class="step current"></span>
-        <span class="step"></span>
-      </div>
-
-      <div class="progress-labels" id="requestProgressLabels">
-        <span>Pending</span>
-        <span>Processing</span>
-        <span>Ready</span>
-        <span>Done</span>
-      </div>
-
-      <div class="card-meta">
-        <div>
-          <small>Document</small>
-          <strong id="requestStatus">Ready for pickup</strong>
+    <section class="section2" id="services">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>Services you can request online</h2>
+          <p>Choose a document, submit the required details, and track your request from the resident portal.</p>
         </div>
-        <div>
-          <small>Payment</small>
-          <strong id="requestPayment">Verified by staff</strong>
+        <div class="svc-grid">
+          <article class="svc reveal">
+            <span class="icon"><svg class="ico"><use href="#i-file"/></svg></span>
+            <h3>Document requests</h3>
+            <p>Request available barangay documents and follow their processing status.</p>
+            <a class="btn btn-outline" href="/resident/request.html">Open requests</a>
+          </article>
+          <article class="svc reveal">
+            <span class="icon"><svg class="ico"><use href="#i-user"/></svg></span>
+            <h3>Resident registration</h3>
+            <p>Create a resident account and submit registration information for staff review.</p>
+            <a class="btn btn-outline" href="/resident/regisForm.html">Register</a>
+          </article>
+          <article class="svc reveal">
+            <span class="icon"><svg class="ico"><use href="#i-bell"/></svg></span>
+            <h3>Request tracking</h3>
+            <p>View updates and notifications for submitted document requests and concerns.</p>
+            <a class="btn btn-outline" href="/resident/trackRequests.html">Track requests</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section2 alt" id="how">
+      <div class="container">
+        <div class="section-head reveal">
+          <h2>How it works</h2>
+          <p>Four steps from your phone or computer.</p>
+        </div>
+        <ol class="steps">
+          <li class="reveal"><h3>Create your account</h3><p>Fill in your details and address. Staff review your registration to confirm residency.</p></li>
+          <li class="reveal"><h3>Request a document</h3><p>Select an available service and submit the purpose and payment details.</p></li>
+          <li class="reveal"><h3>Track every step</h3><p>See whether your request is pending, processing, ready, or completed.</p></li>
+          <li class="reveal"><h3>Collect it</h3><p>Receive an update when the document is ready for release.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section2">
+      <div class="container">
+        <div class="section-head reveal"><h2>Built for residents and staff</h2></div>
+        <div class="features">
+          <div class="feature reveal"><span class="icon"><svg class="ico"><use href="#i-shield"/></svg></span><div><h3>Private and secure</h3><p>Your records are visible only to you and authorized staff.</p></div></div>
+          <div class="feature reveal"><span class="icon"><svg class="ico"><use href="#i-search"/></svg></span><div><h3>Clear progress</h3><p>Document status and payment status are shown separately.</p></div></div>
+          <div class="feature reveal"><span class="icon"><svg class="ico"><use href="#i-bell"/></svg></span><div><h3>Timely notifications</h3><p>Receive updates whenever staff process or complete a request.</p></div></div>
+          <div class="feature reveal"><span class="icon"><svg class="ico"><use href="#i-phone"/></svg></span><div><h3>Works on any device</h3><p>The portal adapts to phones, tablets, and desktops.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section2 alt" id="faq">
+      <div class="container">
+        <div class="section-head reveal"><h2>Common questions</h2></div>
+        <div class="faq reveal">
+          <details><summary>Who can register?</summary><p>Residents of the barangay. Your registration is reviewed by staff before you can use resident services.</p></details>
+          <details><summary>How is my residency verified?</summary><p>Staff check the details and supporting documents you submit against barangay records.</p></details>
+          <details><summary>How can I track a document request?</summary><p>Log in to the resident portal and open Request Tracking to view the latest status.</p></details>
         </div>
       </div>
     </section>
   </main>
 
-  <section class="stats-row" aria-label="Barangay statistics">
-    <article class="stat-box">
-      <strong id="verifiedResidents" aria-live="polite">Loading...</strong>
-      <span>Verified residents</span>
-    </article>
-    <article class="stat-box">
-      <strong id="completedRequests" aria-live="polite">Loading...</strong>
-      <span>Requests completed</span>
-    </article>
-  </section>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><h3>Barangay Portal</h3><p class="muted">Barangay Information Management System for resident registration, document requests, concerns, and notifications.</p></div>
+        <div><h3>Explore</h3><ul><li><a href="#services">Services</a></li><li><a href="#how">How it works</a></li><li><a href="/resident/regisForm.html">Register</a></li><li><a href="/resident/login.html">Log in</a></li></ul></div>
+      </div>
+      <p class="legal muted">Your personal data is handled under the Data Privacy Act of 2012 (RA 10173).</p>
+    </div>
+  </footer>
+
   <script src="/js/landing.js"></script>
 </body>
 </html>

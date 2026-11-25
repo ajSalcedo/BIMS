@@ -1,0 +1,286 @@
+.registration-page {
+  --registration-green: #1f5136;
+  --registration-green-dark: #143626;
+  --registration-green-light: #276a45;
+  --registration-line: #d9e0dc;
+  display: block;
+  min-height: 100vh;
+  padding: 0;
+  background: #f3f6f4;
+  color: #1d2a3a;
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.registration-page::before { display: none; }
+.registration-container { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
+.registration-skip { position: absolute; top: 0; left: -999px; z-index: 100; padding: .6rem 1rem; background: var(--registration-green); color: #fff; }
+.registration-skip:focus { left: 1rem; }
+
+.registration-site-header {
+  position: relative;
+  z-index: 20;
+  background: #fff;
+  border-bottom: 1px solid #d9e0dc;
+}
+
+.registration-site-header > .registration-container {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.registration-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: .65rem;
+  color: #16233b;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.registration-brand span {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--registration-green);
+  color: #fff;
+}
+
+.registration-back {
+  color: var(--registration-green);
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.registration-back:hover { text-decoration: underline; }
+
+.registration-hero {
+  padding: 2.8rem 0 3.2rem;
+  background: var(--registration-green-dark);
+  color: #fff;
+}
+
+.registration-eyebrow {
+  margin: 0 0 .6rem;
+  color: #f2b705;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+}
+
+.registration-hero h1 {
+  margin: 0 0 .55rem;
+  color: #fff;
+  font-size: clamp(1.8rem, 4vw, 2.15rem);
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+
+.registration-hero p:last-child {
+  max-width: 62ch;
+  margin: 0;
+  color: #c9ddd0;
+}
+
+.registration-main {
+  min-height: 60vh;
+  padding: 1.5rem 0 4rem;
+  background: #f3f6f4;
+}
+
+.registration-progress {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: .5rem;
+  margin: -2.35rem 0 1.25rem;
+  padding: 1rem;
+  border: 1px solid #d9e0dc;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 12px 30px rgba(20, 54, 38, .1);
+  list-style: none;
+}
+
+.registration-progress li {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .4rem;
+  color: #68746d;
+  font-size: .84rem;
+  font-weight: 650;
+  text-align: center;
+}
+
+.progress-number {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid #d9e0dc;
+  border-radius: 50%;
+  background: #fff;
+  color: #68746d;
+  font-weight: 750;
+}
+
+.registration-progress li.active { border-radius: 10px; background: var(--registration-green-dark); color: #fff; }
+.registration-progress li.active .progress-number {
+  border-color: #f2b705;
+  background: transparent;
+  color: #f2b705;
+  box-shadow: none;
+}
+
+.registration-progress li.completed { color: var(--registration-green); }
+.registration-progress li.completed .progress-number { border-color: #c4dbc9; background: #e4efe8; color: var(--registration-green); }
+
+.registration-page .registration-form {
+  display: block;
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border: 1px solid #d9e0dc;
+  border-radius: 16px;
+  background: #fff;
+  color: #1d2a3a;
+  box-shadow: 0 12px 34px rgba(20, 54, 38, .07);
+}
+
+.registration-step {
+  display: grid;
+  min-width: 0;
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.registration-step[hidden] { display: none; }
+.registration-step legend { padding: 0; color: #16233b; font-size: 1.35rem; font-weight: 750; }
+.form-grid { display: grid; align-items: start; gap: 1rem; }
+.resident-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.account-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.registration-page .registration-form label {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: .4rem;
+  margin: 0;
+  color: #334155;
+  font-size: .9rem;
+  font-weight: 650;
+}
+
+.registration-page .registration-form input:not([type="checkbox"]):not([type="radio"]),
+.registration-page .registration-form input[type="file"],
+.registration-page .registration-form select {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: .6rem .75rem;
+  border: 1px solid #c8d2cc;
+  border-radius: 8px;
+  background: #fff;
+  color: #1d2a3a;
+  font: inherit;
+  font-weight: 400;
+}
+
+.registration-page .registration-form input[type="file"] { padding: .45rem .6rem; }
+.registration-page .registration-form input[readonly] { background: #f1f5f2; color: #5b6778; }
+.registration-page .registration-form input:focus,
+.registration-page .registration-form select:focus { outline: 3px solid #e4efe8; border-color: var(--registration-green-light); }
+.registration-page .registration-form input[type="checkbox"] { width: 18px; height: 18px; min-height: 18px; margin: .15rem 0 0; accent-color: var(--registration-green); }
+.registration-page .registration-form input[type="radio"] { width: 18px; height: 18px; min-height: 18px; margin: .15rem 0 0; accent-color: var(--registration-green); }
+.registration-page .registration-form .checkbox-label { display: flex; flex-direction: row; align-items: flex-start; gap: .65rem; }
+.registration-page .registration-form .checkbox-label span { flex: 1; }
+
+.registration-output {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .6rem .75rem;
+  border: 1px solid #e0e7e2;
+  border-radius: 8px;
+  background: #f8faf9;
+  color: #5b6778;
+}
+
+.form-note { margin: -.25rem 0 0; color: #5b6778; font-size: .9rem; }
+.address-heading { margin: .5rem 0 -.3rem; color: var(--registration-green); font-size: 1rem; }
+.wide-field { grid-column: 1 / -1; }
+.same-address { margin: .1rem 0; color: #334155; }
+
+.privacy-notice {
+  display: grid;
+  gap: .7rem;
+  padding: 1.1rem;
+  border: 1px solid #d9e0dc;
+  border-radius: 10px;
+  background: #f8faf9;
+  color: #1d2a3a;
+}
+
+.privacy-notice h2 { margin: 0; color: #16233b; font-size: 1.05rem; }
+.privacy-notice p { margin: 0; color: #5b6778; line-height: 1.6; }
+.privacy-consent { color: #334155; font-weight: 500 !important; }
+
+.step-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: .7rem;
+  margin-top: .5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5ebe7;
+}
+
+.step-actions .button {
+  min-width: 124px;
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .6rem 1rem;
+  border: 1px solid var(--registration-green);
+  border-radius: 8px;
+  background: var(--registration-green);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.step-actions .button:hover { background: var(--registration-green-dark); }
+.step-actions .secondary-button { background: #fff; color: var(--registration-green); }
+.step-actions .secondary-button:hover { background: #f1f7f3; }
+.step-actions .button:disabled { cursor: wait; opacity: .65; }
+.registration-page .registration-form .form-message { flex-basis: 100%; margin: 0; color: var(--registration-green); }
+.registration-page .registration-form .form-message.error { color: #a12b2b; }
+
+@media (max-width: 760px) {
+  .registration-progress { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .resident-grid, .account-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 520px) {
+  .registration-site-header > .registration-container { min-height: 62px; }
+  .registration-hero { padding: 2.1rem 0 2.8rem; }
+  .registration-main { padding-top: 1.25rem; }
+  .registration-progress { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem .25rem; padding: .8rem .35rem; }
+  .registration-progress li { font-size: .76rem; }
+  .progress-number { width: 30px; height: 30px; }
+  .registration-form { padding: 1.1rem .9rem; }
+  .resident-grid, .account-grid { grid-template-columns: 1fr; }
+  .step-actions { justify-content: stretch; }
+  .step-actions .button { flex: 1 1 120px; }
+}
