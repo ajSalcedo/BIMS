@@ -1,6 +1,10 @@
 let allRequests = [];
 const table = document.getElementById('requestTable');
 const detail = document.getElementById('detail');
+const requestUpdateDialog = document.getElementById('requestUpdateDialog');
+const closeRequestUpdateDialog = document.getElementById('closeRequestUpdateDialog');
+
+closeRequestUpdateDialog.addEventListener('click', () => requestUpdateDialog.close());
 
 function render() {
   const searchInput = document.getElementById('search');
@@ -149,12 +153,15 @@ async function loadDetail(id) {
     });
 
     const result = await responseUpdate.json();
-    alert(result.message);
 
-    if (responseUpdate.ok) {
-      await load();
-      await loadDetail(id);
+    if (!responseUpdate.ok) {
+      alert(result.message || 'Unable to update request.');
+      return;
     }
+
+    requestUpdateDialog.showModal();
+    await load();
+    await loadDetail(id);
   };
 }
 

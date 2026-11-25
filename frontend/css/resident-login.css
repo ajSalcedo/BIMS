@@ -1,0 +1,129 @@
+.resident-login-page {
+  --login-green: #143626;
+  --login-green-700: #1f5136;
+  --login-gold: #f2b705;
+  --login-navy: #16233b;
+  --login-text: #1d2a3a;
+  --login-muted: #5b6778;
+  --login-line: #d9e0dc;
+  --login-surface: #fff;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 0;
+  background: #f3f6f4;
+  color: var(--login-text);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+.resident-login-page::before { display: none; }
+.resident-login-container { width: min(1120px, calc(100% - 2rem)); margin-inline: auto; }
+.resident-login-skip { position: absolute; top: 0; left: -999px; z-index: 100; padding: .6rem 1rem; background: var(--login-green-700); color: #fff; }
+.resident-login-skip:focus { left: 1rem; }
+
+.resident-login-header { position: relative; z-index: 2; border-bottom: 1px solid var(--login-line); background: #fff; }
+.resident-login-header .header-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.resident-login-brand { display: inline-flex; align-items: center; gap: .65rem; color: var(--login-navy); font-weight: 750; text-decoration: none; }
+.resident-login-brand .brand-mark { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 9px; background: var(--login-green-700); color: #fff; }
+.resident-login-header nav { display: flex; align-items: center; gap: clamp(.8rem, 2.5vw, 2rem); }
+.resident-login-header nav a { color: var(--login-navy); font-size: .95rem; font-weight: 600; text-decoration: none; }
+.resident-login-header nav a:hover { color: var(--login-green-700); text-decoration: underline; }
+.resident-login-header nav .staff-link { color: var(--login-green-700); }
+
+.resident-login-main {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: clamp(2.5rem, 7vh, 5rem) 1rem;
+  background:
+    radial-gradient(circle at 50% 0, rgba(31,81,54,.08), transparent 34rem),
+    #f3f6f4;
+}
+
+.resident-login-card {
+  width: min(100%, 480px);
+  padding: clamp(1.75rem, 5vw, 2.75rem);
+  border: 1px solid var(--login-line);
+  border-radius: 18px;
+  background: var(--login-surface);
+  box-shadow: 0 24px 60px -38px rgba(15,46,33,.42);
+}
+
+.login-symbol { display: flex; justify-content: center; margin-bottom: 1rem; }
+.login-symbol .brand-mark { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 13px; background: var(--login-green); color: var(--login-gold); font-size: 1.2rem; }
+.login-eyebrow { margin: 0 0 .45rem; color: var(--login-green-700); font-size: .76rem; font-weight: 800; letter-spacing: .13em; text-align: center; }
+.resident-login-card h1 { margin: 0; color: var(--login-navy); font-size: clamp(1.8rem, 4vw, 2.15rem); font-weight: 700; letter-spacing: -.02em; text-align: center; }
+.login-intro { max-width: 38ch; margin: .75rem auto 1.8rem; color: var(--login-muted); line-height: 1.6; text-align: center; }
+
+.resident-login-card form { display: grid; gap: .65rem; }
+.resident-login-card form > label { margin-top: .45rem; color: #334155; font-size: .9rem; font-weight: 700; }
+.resident-login-card form > input {
+  width: 100%;
+  min-height: 48px;
+  padding: .7rem .85rem;
+  border: 1px solid #c8d2cc;
+  border-radius: 8px;
+  background: #fff;
+  color: var(--login-text);
+  font: inherit;
+}
+.resident-login-card form > input:focus { outline: 3px solid #e4efe8; border-color: var(--login-green-700); }
+.resident-login-card .login-options { display: flex; align-items: center; justify-content: space-between; gap: .8rem; margin: .5rem 0 .4rem; }
+.resident-login-card .checkbox-label { display: inline-flex; flex-direction: row; align-items: center; gap: .5rem; color: var(--login-muted); font-size: .9rem; font-weight: 500; }
+.resident-login-card .checkbox-label input { width: 17px; height: 17px; margin: 0; accent-color: var(--login-green-700); }
+.forgot-password { color: var(--login-muted); font-size: .88rem; }
+
+.resident-login-card .login-submit {
+  width: 100%;
+  min-height: 48px;
+  margin-top: .2rem;
+  border: 1px solid var(--login-green-700);
+  border-radius: 9px;
+  background: var(--login-green-700);
+  color: #fff;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+  transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+}
+.resident-login-card .login-submit:hover { transform: translateY(-1px); background: var(--login-green); box-shadow: 0 8px 18px -10px rgba(15,46,33,.75); }
+.register-prompt { margin: 1.35rem 0 0; color: var(--login-muted); text-align: center; }
+.register-prompt a { color: var(--login-green-700); font-weight: 700; }
+
+.resident-login-card .admin-entry {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .7rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5ebe7;
+  color: var(--login-muted);
+  font-size: .9rem;
+}
+.resident-login-card .admin-entry a { color: var(--login-green-700); font-weight: 700; text-decoration: none; }
+.resident-login-card .admin-entry a:hover { text-decoration: underline; }
+
+.resident-login-footer { background: var(--login-green); color: #c9ddd0; }
+.resident-login-footer .footer-content { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(180px,.7fr); gap: 2rem 5rem; padding: 2.4rem 0 1.2rem; }
+.resident-login-footer .footer-brand { color: #fff; }
+.resident-login-footer .footer-brand .brand-mark { background: var(--login-gold); color: var(--login-green); }
+.resident-login-footer .footer-about p { max-width: 54ch; margin: .8rem 0 0; color: #a9c3b3; line-height: 1.6; }
+.resident-login-footer .footer-links { display: grid; justify-items: start; gap: .45rem; }
+.resident-login-footer .footer-links h2 { margin: 0 0 .35rem; color: #fff; font-size: 1rem; }
+.resident-login-footer .footer-links a { color: #c9ddd0; text-decoration: none; }
+.resident-login-footer .footer-links a:hover { color: #fff; text-decoration: underline; }
+.resident-login-footer .footer-legal { grid-column: 1 / -1; margin: 0; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,.15); color: #a9c3b3; font-size: .88rem; }
+
+@media (max-width: 560px) {
+  .resident-login-header .header-inner { min-height: 64px; }
+  .resident-login-header nav { gap: .8rem; }
+  .resident-login-header nav a { font-size: .85rem; }
+  .resident-login-header nav a:first-child { display: none; }
+  .resident-login-header nav .staff-link { display: none; }
+  .resident-login-main { padding: 2rem 1rem; }
+  .resident-login-card { padding: 1.6rem 1.2rem; }
+  .resident-login-footer .footer-content { grid-template-columns: 1fr; gap: 1.5rem; padding: 2rem 0 1rem; }
+  .resident-login-footer .footer-legal { grid-column: auto; }
+}

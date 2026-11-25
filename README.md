@@ -89,6 +89,11 @@ Open:
 http://localhost:3000
 ```
 
+Live Server can preview the static frontend because the workspace config points
+its root to `frontend/`. However, Live Server does not run the Express API, so
+login, registration, and data-backed features require `npm run dev` or `npm start`
+and the app at `http://localhost:3000`.
+
 ## Current Subsystem 1 features
 
 ### Public / Resident side
@@ -152,6 +157,9 @@ Subsystem 2 adds resident document/service requests and separate admin processin
 - Update request status and payment status.
 - Add processing remarks.
 - Status changes are recorded in a history table and create a resident notification.
+- View monthly resident registrations, service requests, and community concerns
+  for the last 12 months in the admin Analytics page, including month-over-month
+  comparisons and the most requested service for the current month.
 
 ### Request status flow
 `Pending -> Processing -> Ready for Pickup -> Completed`

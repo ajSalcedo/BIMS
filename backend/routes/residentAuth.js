@@ -1,5 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
+const { randomBytes } = require("crypto");
 const multer = require("multer");
 const pool = require("../config/database");
 
@@ -112,7 +113,11 @@ router.post("/register", parseProofUpload, async (req, res) => {
   const lastName = clean(body.lastName);
   const birthDate = clean(body.birthDate);
   const citizenship = clean(body.citizenship);
-  const relationshipToHead = clean(body.relationshipToHead);
+  const householdAction = clean(body.householdAction);
+  const householdReferenceNumber = clean(body.householdReferenceNumber);
+  const isCreatingHousehold = householdAction === "create";
+  const isJoiningHousehold = householdAction === "join";
+  const relationshipToHead = isCreatingHousehold ? "Head" : clean(body.relationshipToHead);
   const proofDocumentType = clean(body.proofDocumentType);
   const consented = body.privacyConsent === "true";
   const permanentAddress = collectAddress(body, "permanent");
@@ -128,7 +133,10 @@ router.post("/register", parseProofUpload, async (req, res) => {
   }
 
   if (!mobileNumber || !firstName || !lastName || !isValidBirthDate(birthDate) ||
-      !citizenship || !relationshipToHead ||
+      !citizenship || (!isCreatingHousehold && !relationshipToHead) ||
+      (!isCreatingHousehold && !isJoiningHousehold) ||
+      (isJoiningHousehold && !householdReferenceNumber) ||
+      (isCreatingHousehold && householdReferenceNumber) ||
       !permanentAddress.region || !permanentAddress.province ||
       !permanentAddress.cityMunicipality || !permanentAddress.barangay ||
       !permanentAddress.purok || !proofDocumentType || !consented ||
@@ -227,7 +235,6 @@ router.post("/register", parseProofUpload, async (req, res) => {
     return res.status(400).json({ message: "The uploaded file does not match an accepted JPG, PNG, or PDF format." });
   }
 
-  const householdReferenceNumber = clean(body.householdReferenceNumber);
   if (householdReferenceNumber.length > 30) {
     return res.status(400).json({ message: "Household reference number must be 30 characters or fewer." });
   }
@@ -254,8 +261,9 @@ router.post("/register", parseProofUpload, async (req, res) => {
       return res.status(409).json({ message: "Mobile number or email address is already registered." });
     }
 
-    let householdId = null;
-    if (householdReferenceNumber) {
+    let householdId;
+    let registeredHouseholdNumber = householdReferenceNumber;
+    if (isJoiningHousehold) {
       const [households] = await connection.execute(
         "SELECT household_id FROM households WHERE household_number = ?",
         [householdReferenceNumber]
@@ -266,6 +274,21 @@ router.post("/register", parseProofUpload, async (req, res) => {
         return res.status(400).json({ message: "Household reference number was not found." });
       }
       householdId = households[0].household_id;
+    } else {
+      for (let attempt = 0; attempt < 3; attempt += 1) {
+        registeredHouseholdNumber = `HH-${randomBytes(12).toString("hex").toUpperCase()}`;
+        try {
+          const [householdResult] = await connection.execute(
+            `INSERT INTO households (household_number, household_address, purok)
+             VALUES (?, ?, ?)`,
+            [registeredHouseholdNumber, address, permanentAddress.purok]
+          );
+          householdId = householdResult.insertId;
+          break;
+        } catch (error) {
+          if (error.code !== "ER_DUP_ENTRY" || attempt === 2) throw error;
+        }
+      }
     }
 
     const passwordHash = await bcrypt.hash(password, 12);
@@ -320,13 +343,20 @@ router.post("/register", parseProofUpload, async (req, res) => {
         presentAddressEntered ? presentAddress.zipCode || null : null,
         clean(body.landmark) || null,
         clean(body.previousAddress) || null,
-        householdReferenceNumber || null,
+        registeredHouseholdNumber,
         householdSize,
         clean(body.occupation) || null,
         relationshipToHead,
         new Date()
       ]
     );
+
+    if (isCreatingHousehold) {
+      await connection.execute(
+        "UPDATE households SET household_head_id = ? WHERE household_id = ?",
+        [profileResult.insertId, householdId]
+      );
+    }
 
     await connection.execute(
       `INSERT INTO resident_proof_documents
@@ -351,7 +381,8 @@ router.post("/register", parseProofUpload, async (req, res) => {
 
     res.status(201).json({
       message: "Resident account created successfully.",
-      residentId: profileResult.insertId
+      residentId: profileResult.insertId,
+      householdReferenceNumber: isCreatingHousehold ? registeredHouseholdNumber : null
     });
   } catch (error) {
     if (connection && transactionStarted) {

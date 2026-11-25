@@ -5,23 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resident Registration | BIMS</title>
   <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/registration.css">
   <link rel="stylesheet" href="/css/resident-modal.css">
+  <link rel="stylesheet" href="/css/public-header.css">
 </head>
-<body class="form-page">
-  <main class="form-shell registration-shell">
-    <a class="back-link" href="/">← Back to Portal</a>
-    <header class="form-intro registration-intro">
-      <h1>BIMS Resident Registration Form</h1>
-      <p>Information is collected step by step. Required fields are marked with *.</p>
-    </header>
+<body class="form-page registration-page">
+  <a class="registration-skip" href="#main">Skip to registration form</a>
+  <header class="site-header site-header--interior">
+    <div class="container header-row">
+      <a class="brand" href="/#top" aria-label="Barangay Portal home">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span class="brand-text">Barangay Portal</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+        <a href="/#top">Home</a>
+        <a href="/#services">Services</a>
+        <a href="/#how">How it works</a>
+        <a href="/#faq">Help</a>
+        <a class="btn btn-outline btn-sm" href="/resident/regisForm.html" aria-current="page">Register</a>
+        <a class="btn btn-primary btn-sm" href="/resident/login.html">Log in</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="registration-hero">
+    <div class="registration-container">
+      <p class="registration-eyebrow">RESIDENT SERVICES</p>
+      <h1>Resident registration</h1>
+      <p>Create your resident account in six steps. Your information will be reviewed by barangay staff.</p>
+    </div>
+  </section>
+
+  <main class="registration-main" id="main">
+    <div class="registration-container">
 
     <ol class="registration-progress" aria-label="Registration progress">
-      <li class="active" aria-current="step">1 Personal</li>
-      <li>2 Contact</li>
-      <li>3 Address</li>
-      <li>4 Household</li>
-      <li>5 Account</li>
-      <li>6 Review</li>
+      <li class="active" aria-current="step"><span class="progress-number">1</span><span>Personal</span></li>
+      <li><span class="progress-number">2</span><span>Contact</span></li>
+      <li><span class="progress-number">3</span><span>Address</span></li>
+      <li><span class="progress-number">4</span><span>Household</span></li>
+      <li><span class="progress-number">5</span><span>Account</span></li>
+      <li><span class="progress-number">6</span><span>Review</span></li>
     </ol>
 
     <form id="registerForm" class="large-form registration-form" novalidate>
@@ -116,13 +141,26 @@
 
       <fieldset class="form-section registration-step" data-step="3" hidden>
         <legend>4 &nbsp; Household</legend>
+        <fieldset class="household-choice">
+          <legend>Household registration *</legend>
+          <label class="checkbox-label">
+            <input type="radio" name="householdAction" value="create" required>
+            <span>Create a new household</span>
+          </label>
+          <label class="checkbox-label">
+            <input type="radio" name="householdAction" value="join" required>
+            <span>Join an existing household</span>
+          </label>
+        </fieldset>
         <div class="form-grid account-grid">
-          <label>Household reference number<input name="householdReferenceNumber" maxlength="30" autocomplete="off"></label>
+          <div id="householdReferenceField" hidden>
+            <label>Household reference number *<input name="householdReferenceNumber" maxlength="30" autocomplete="off"></label>
+          </div>
           <label>Relationship to household head *<input name="relationshipToHead" required maxlength="80"></label>
           <label>Household size<input name="householdSize" type="number" min="1" max="100" step="1"></label>
           <label>Occupation<input name="occupation" maxlength="100"></label>
         </div>
-        <p class="form-note">If provided, the household reference number must already exist in BIMS.</p>
+        <p class="form-note" id="householdRegistrationNote">Choose whether to create a household or join one. A new household reference number will be generated after registration.</p>
         <div class="form-actions step-actions">
           <button class="button secondary-button" type="button" data-previous>Previous</button>
           <button class="button" type="button" data-next>Continue</button>
@@ -175,8 +213,10 @@
         </div>
       </fieldset>
     </form>
+    </div>
   </main>
 
+  <script src="/js/public-header.js"></script>
   <script src="/js/resident-modal.js"></script>
   <script src="/js/register.js"></script>
 </body>

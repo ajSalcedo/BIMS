@@ -9,6 +9,7 @@ const residents = require("./routes/residents");
 const dashboard = require("./routes/dashboard");
 const requests = require("./routes/requests");
 const concerns = require("./routes/concerns");
+const analytics = require("./routes/analytics");
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
@@ -36,6 +37,7 @@ app.use("/api/residents", residents);
 app.use("/api/dashboard", dashboard);
 app.use("/api/requests", requests);
 app.use("/api/concerns", concerns);
+app.use("/api/analytics", analytics);
 
 const protectedResidentPages = new Set([
   "/dashboard.html",

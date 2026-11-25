@@ -2,7 +2,7 @@ const accountLink = document.getElementById("accountLink");
 const primaryAction = document.getElementById("primaryAction");
 const verifiedResidents = document.getElementById("verifiedResidents");
 const completedRequests = document.getElementById("completedRequests");
-const requestSteps = [...document.querySelectorAll("#requestProgress .step")];
+const requestSteps = [...document.querySelectorAll("#requestProgressLabels li")];
 const progressStatuses = ["Pending", "Processing", "Ready for Pickup", "Completed"];
 
 function formatUpdatedAt(value) {
@@ -50,8 +50,8 @@ function renderRequest(request) {
 
   const statusIndex = progressStatuses.indexOf(request.status);
   requestSteps.forEach((step, index) => {
-    step.classList.toggle("active", statusIndex >= 0 && index < statusIndex);
-    step.classList.toggle("current", statusIndex === index);
+    step.classList.toggle("on", statusIndex >= 0 && index < statusIndex);
+    step.classList.toggle("now", statusIndex === index);
   });
 }
 
@@ -66,8 +66,8 @@ function renderSampleRequest() {
   document.getElementById("requestProgressLabels").hidden = false;
 
   requestSteps.forEach((step, index) => {
-    step.classList.toggle("active", index < 2);
-    step.classList.toggle("current", index === 2);
+    step.classList.toggle("on", index < 2);
+    step.classList.toggle("now", index === 2);
   });
 }
 
@@ -112,3 +112,48 @@ async function loadLandingData() {
 
 loadLandingData();
 window.setInterval(loadLandingData, 30000);
+
+const header = document.querySelector(".landing .site-header");
+const navToggle = document.querySelector(".landing .nav-toggle");
+const nav = document.getElementById("site-nav");
+
+function updateHeader() {
+  if (header) {
+    header.classList.toggle("scrolled", window.scrollY > 24);
+  }
+}
+
+updateHeader();
+window.addEventListener("scroll", updateHeader, { passive: true });
+
+if (navToggle && nav) {
+  navToggle.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    navToggle.setAttribute("aria-expanded", String(open));
+  });
+
+  nav.addEventListener("click", (event) => {
+    if (event.target.closest("a")) {
+      nav.classList.remove("open");
+      navToggle.setAttribute("aria-expanded", "false");
+    }
+  });
+}
+
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reveals = document.querySelectorAll(".reveal");
+
+if (reduceMotion || !("IntersectionObserver" in window)) {
+  reveals.forEach((element) => element.classList.add("in"));
+} else {
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  reveals.forEach((element) => revealObserver.observe(element));
+}

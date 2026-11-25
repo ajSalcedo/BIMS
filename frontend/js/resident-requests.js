@@ -1,8 +1,25 @@
 const list = document.getElementById('requestList');
 const detail = document.getElementById('requestDetail');
+const detailContent = document.getElementById('requestDetailContent');
 
 function money(value) {
   return `₱${Number(value || 0).toFixed(2)}`;
+}
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[character]);
+}
+
+function showDetails() {
+  if (detail && !detail.open) {
+    detail.showModal();
+  }
 }
 
 function render(rows) {
@@ -12,22 +29,23 @@ function render(rows) {
 
   list.innerHTML = rows.length
     ? rows
-        .map(
-          (request) => `
-            <button class="request-item" data-id="${request.request_id}">
+        .map((request) => {
+          const status = String(request.status || '');
+          return `
+            <button class="request-item" data-tracking-number="${escapeHtml(request.tracking_number)}">
               <span>
-                <b>${request.tracking_number}</b>
-                <small>${request.service_type} • ${new Date(request.submitted_at).toLocaleString()}</small>
+                <b>${escapeHtml(request.tracking_number)}</b>
+                <small>${escapeHtml(request.service_type)} • ${escapeHtml(new Date(request.submitted_at).toLocaleString())}</small>
               </span>
-              <strong class="status status-${request.status.replaceAll(' ', '-').toLowerCase()}">${request.status}</strong>
+              <strong class="status status-${escapeHtml(status.replaceAll(' ', '-').toLowerCase())}">${escapeHtml(status)}</strong>
             </button>
-          `
-        )
+          `;
+        })
         .join('')
     : '<p>No requests yet.</p>';
 
   document.querySelectorAll('.request-item').forEach((button) => {
-    button.onclick = () => loadDetail(button.dataset.id);
+    button.onclick = () => loadDetail(button.dataset.trackingNumber);
   });
 }
 
@@ -42,43 +60,55 @@ async function load() {
   render(data.requests || []);
 }
 
-async function loadDetail(id) {
-  const response = await fetch(`/api/requests/mine/${id}`);
-  const data = await response.json();
+async function loadDetail(trackingNumber) {
+  try {
+    const response = await fetch(`/api/requests/mine/${encodeURIComponent(trackingNumber)}`);
+    if (response.status === 401) {
+      return (location.href = '/resident/login.html');
+    }
 
-  if (!response.ok || !data || !data.request) {
-    return;
-  }
+    const data = await response.json();
+    if (!detail || !detailContent) {
+      return;
+    }
 
-  if (!detail) {
-    return;
-  }
+    if (!response.ok || !data || !data.request) {
+      detailContent.innerHTML = `<p>${escapeHtml(data && data.message || 'Unable to load this request.')}</p>`;
+      showDetails();
+      return;
+    }
 
-  detail.innerHTML = `
-    <h3>${data.request.tracking_number}</h3>
-    <div class="info-grid">
-      <div class="info-item"><small>Document</small>${data.request.service_type}</div>
-      <div class="info-item"><small>Status</small>${data.request.status}</div>
-      <div class="info-item"><small>Purpose</small>${data.request.purpose}</div>
-      <div class="info-item"><small>Fee</small>${money(data.request.fee)}</div>
-      <div class="info-item"><small>Payment</small>${data.request.payment_status}</div>
-      <div class="info-item"><small>Submitted</small>${new Date(data.request.submitted_at).toLocaleString()}</div>
-    </div>
-    <h4>Status History</h4>
-    <div class="timeline">
-      ${data.history
-        .map(
-          (historyItem) => `
-            <div>
-              <b>${historyItem.status}</b>
-              <span>${historyItem.remarks || ''}</span>
-              <small>${new Date(historyItem.changed_at).toLocaleString()}</small>
+    detailContent.innerHTML = `
+      <h3>${escapeHtml(data.request.tracking_number)}</h3>
+      <div class="info-grid">
+        <div class="info-item"><small>Document</small>${escapeHtml(data.request.service_type)}</div>
+        <div class="info-item"><small>Status</small>${escapeHtml(data.request.status)}</div>
+        <div class="info-item"><small>Purpose</small>${escapeHtml(data.request.purpose)}</div>
+        <div class="info-item"><small>Fee</small>${escapeHtml(money(data.request.fee))}</div>
+        <div class="info-item"><small>Payment</small>${escapeHtml(data.request.payment_status)}</div>
+        <div class="info-item"><small>Submitted</small>${escapeHtml(new Date(data.request.submitted_at).toLocaleString())}</div>
+      </div>
+      <h4>Status History</h4>
+      <div class="request-history">
+        ${(Array.isArray(data.history) ? data.history : [])
+          .map(historyItem => `
+            <div class="request-history-item">
+              <b>${escapeHtml(historyItem.status)}</b>
+              <span>${escapeHtml(historyItem.remarks)}</span>
+              <small>${escapeHtml(new Date(historyItem.changed_at).toLocaleString())}</small>
             </div>
-          `
-        )
-        .join('')}
-    </div>
-  `;
+          `)
+          .join('')}
+      </div>
+    `;
+    showDetails();
+  } catch (error) {
+    console.error('Unable to load request details.', error);
+    if (detailContent) {
+      detailContent.innerHTML = '<p>Unable to load this request. Please try again.</p>';
+      showDetails();
+    }
+  }
 }
 
 const searchButton = document.getElementById('searchButton');
@@ -91,21 +121,16 @@ if (searchButton) {
       return load();
     }
 
-    const response = await fetch(`/api/requests/mine/${encodeURIComponent(trackingNumber)}`);
-    const data = await response.json();
-
-    if (!detail) {
-      return;
-    }
-
-    detail.innerHTML = response.ok
-      ? `
-        <h3>${data.request.tracking_number}</h3>
-        <p>${data.request.service_type} — <b>${data.request.status}</b></p>
-        <p>${data.request.purpose}</p>
-      `
-      : `<p>${data.message}</p>`;
+    await loadDetail(trackingNumber);
   };
+}
+
+const closeDetailButton = document.getElementById('closeRequestDetail');
+if (closeDetailButton && detail) {
+  closeDetailButton.addEventListener('click', () => detail.close());
+  detail.addEventListener('click', event => {
+    if (event.target === detail) detail.close();
+  });
 }
 
 const logoutButton = document.getElementById('logoutButton');

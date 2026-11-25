@@ -5,36 +5,82 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Resident Login | BIMS</title>
   <link rel="stylesheet" href="/css/global.css">
+  <link rel="stylesheet" href="/css/resident-login.css">
   <link rel="stylesheet" href="/css/resident-modal.css">
+  <link rel="stylesheet" href="/css/public-header.css">
 </head>
-<body class="auth-page">
-  <a class="back-link" href="/">← Back</a>
+<body class="auth-page resident-login-page">
+  <a class="resident-login-skip" href="#main">Skip to login</a>
 
-  <main class="login-layout">
-    <section class="login-card">
-      <h1>Resident Log In</h1>
+  <header class="site-header site-header--interior">
+    <div class="container header-row">
+      <a class="brand" href="/#top" aria-label="Barangay Portal home">
+        <span class="brand-mark" aria-hidden="true">B</span>
+        <span class="brand-text">Barangay Portal</span>
+      </a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+        <a href="/#top">Home</a>
+        <a href="/#services">Services</a>
+        <a href="/#how">How it works</a>
+        <a href="/#faq">Help</a>
+        <a class="btn btn-outline btn-sm" href="/resident/regisForm.html">Register</a>
+        <a class="btn btn-primary btn-sm" href="/resident/login.html" aria-current="page">Log in</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="resident-login-main" id="main">
+    <section class="resident-login-card" aria-labelledby="residentLoginTitle">
+      <div class="login-symbol" aria-hidden="true"><span class="brand-mark">B</span></div>
+      <p class="login-eyebrow">RESIDENT PORTAL</p>
+      <h1 id="residentLoginTitle">Welcome!</h1>
+      <p class="login-intro">Sign in to manage your resident account and keep track of your barangay services.</p>
+
       <form id="residentLoginForm">
-        <label>Mobile number
-          <input id="identifier" name="identifier" type="tel" required autocomplete="tel" inputmode="tel" placeholder="09XXXXXXXXX">
-        </label>
-        <label>Password
-          <input id="password" type="password" required autocomplete="current-password">
-        </label>
-        <div class="form-row small-row">
-          <label class="checkbox-label"><input type="checkbox" id="remember"> Remember Me</label>
-          <span class="muted">Forgot password?</span>
-        </div>
-        <button class="button" type="submit">Log In</button>
-      </form>
-      <p class="center">No account? <a href="/resident/regisForm.html">Create an account</a></p>
-    </section>
+        <label for="identifier">Mobile number</label>
+        <input id="identifier" name="identifier" type="tel" required autocomplete="tel" inputmode="tel" placeholder="09XXXXXXXXX">
 
-    <section class="login-card admin-entry">
-      <h2>Admin Only</h2>
-      <a class="button secondary-button" href="/admin/login.html">Admin Login</a>
+        <label for="password">Password</label>
+        <input id="password" type="password" required autocomplete="current-password" placeholder="Enter your password">
+
+        <div class="form-row small-row login-options">
+          <label class="checkbox-label" for="remember"><input type="checkbox" id="remember"> <span>Remember Me</span></label>
+          <span class="forgot-password">Forgot password?</span>
+        </div>
+
+        <button class="button login-submit" type="submit">Log In</button>
+      </form>
+
+      <p class="register-prompt">No account? <a href="/resident/regisForm.html">Create an account</a></p>
+
+      <div class="admin-entry">
+        <span>Barangay staff?</span>
+        <a href="/admin/login.html">Go to Admin Login <span aria-hidden="true">→</span></a>
+      </div>
     </section>
   </main>
 
+  <footer class="resident-login-footer">
+    <div class="resident-login-container footer-content">
+      <div class="footer-about">
+        <a class="resident-login-brand footer-brand" href="/">
+          <span class="brand-mark" aria-hidden="true">B</span>
+          <span>Barangay Portal</span>
+        </a>
+        <p>Barangay Information Management System for resident registration and online services.</p>
+      </div>
+      <nav class="footer-links" aria-label="Portal links">
+        <h2>Portal</h2>
+        <a href="/">Home</a>
+        <a href="/resident/regisForm.html">Resident registration</a>
+        <a href="/admin/login.html">Staff / admin login</a>
+      </nav>
+      <p class="footer-legal">Your personal data is handled under the Data Privacy Act of 2012 (RA 10173).</p>
+    </div>
+  </footer>
+
+  <script src="/js/public-header.js"></script>
   <script src="/js/resident-modal.js"></script>
   <script src="/js/resident-login.js"></script>
 </body>

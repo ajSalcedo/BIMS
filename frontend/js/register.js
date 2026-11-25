@@ -13,14 +13,15 @@ const presentAddressPairs = [
 ];
 let activeStep = 0;
 
-function showStep(index) {
+function showStep(index, scrollToStep = true) {
   activeStep = index;
   steps.forEach((step, stepIndex) => {
     step.hidden = stepIndex !== index;
-    if (stepIndex === index) step.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (scrollToStep && stepIndex === index) step.scrollIntoView({ behavior: "smooth", block: "start" });
   });
   progressItems.forEach((item, stepIndex) => {
     item.classList.toggle("active", stepIndex === index);
+    item.classList.toggle("completed", stepIndex < index);
     if (stepIndex === index) item.setAttribute("aria-current", "step");
     else item.removeAttribute("aria-current");
   });
@@ -92,6 +93,37 @@ form.elements.birthDate.addEventListener("input", () => {
 });
 
 const sameAddressCheckbox = form.elements.presentAddressSameAsPermanent;
+const householdReferenceField = document.getElementById("householdReferenceField");
+const householdReferenceInput = form.elements.householdReferenceNumber;
+const relationshipToHeadInput = form.elements.relationshipToHead;
+const householdRegistrationNote = document.getElementById("householdRegistrationNote");
+
+function syncHouseholdFields(event) {
+  const action = form.querySelector('input[name="householdAction"]:checked')?.value;
+  const joiningHousehold = action === "join";
+  householdReferenceField.hidden = !joiningHousehold;
+  householdReferenceInput.required = joiningHousehold;
+  householdReferenceInput.disabled = !joiningHousehold;
+  relationshipToHeadInput.disabled = !joiningHousehold;
+  relationshipToHeadInput.required = joiningHousehold;
+
+  if (action === "create") {
+    relationshipToHeadInput.value = "Head";
+  } else if (action === "join" && event) {
+    relationshipToHeadInput.value = "";
+  }
+
+  householdRegistrationNote.textContent = joiningHousehold
+    ? "Enter the household reference number provided by its head."
+    : action === "create"
+      ? "You will be registered as the household head. A new household reference number will be generated after registration."
+      : "Choose whether to create a household or join one.";
+}
+
+form.querySelectorAll('input[name="householdAction"]').forEach(input => {
+  input.addEventListener("change", syncHouseholdFields);
+});
+
 function syncPresentAddress() {
   presentAddressPairs.forEach(([permanentName, presentName]) => {
     const permanentField = form.elements[permanentName];
@@ -117,6 +149,7 @@ function renderReview() {
     ["Permanent address", null], ["Present address", null],
     ["Years of residency", "yearsOfResidency"], ["Landmark", "landmark"],
     ["Previous address", "previousAddress"],
+    ["Household registration", "householdAction"],
     ["Household reference", "householdReferenceNumber"],
     ["Relationship to household head", "relationshipToHead"],
     ["Household size", "householdSize"], ["Occupation", "occupation"],
@@ -137,6 +170,10 @@ function renderReview() {
       value = sameAddressCheckbox.checked ? joinAddress("permanent") : joinAddress("present");
     } else if (name === "proofOfResidency") {
       value = form.elements.proofOfResidency.files[0]?.name || "";
+    } else if (name === "householdAction") {
+      value = form.elements.householdAction.value === "create"
+        ? "Create a new household"
+        : "Join an existing household";
     } else {
       value = form.elements[name].value;
     }
@@ -189,6 +226,9 @@ form.addEventListener("submit", async event => {
     }
 
     await showResidentModal("Account created successfully.");
+    if (result.householdReferenceNumber) {
+      await showResidentModal(`Household reference number: ${result.householdReferenceNumber}. Share this number with residents joining your household.`);
+    }
     window.location.replace("/resident/dashboard.html");
   } catch (error) {
     console.error("Unable to register resident.", error);
@@ -197,4 +237,5 @@ form.addEventListener("submit", async event => {
   }
 });
 
-showStep(0);
+syncHouseholdFields();
+showStep(0, false);
